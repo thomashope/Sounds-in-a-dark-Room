@@ -17,14 +17,29 @@ function Wall:init(x, y)
 	table.insert( Wall.all, self )
 end
 
-function Wall:destroy()
-	self.body:destroy()
-	self.alive = false
+function Wall:delete()
+	if self.alive then
+		self.body:destroy()
+		self.alive = false
+	end
 end
 
 function Wall:draw()
 	love.graphics.setColor(0, 0, 0)
 	love.graphics.rectangle( 'fill', self.x - self.size/2, self.y - self.size/2, self.size, self.size )
+end
+
+function Wall:update_all(dt)
+	-- Remove dead walls, if there is such a thing
+	local i = 1
+	while i < #self.all do
+		if not self.all[i].alive then
+			table.remove( self.all, i )
+		else
+			self.all[i]:update(dt)
+			i = i + 1
+		end
+	end
 end
 
 function Wall:draw_all()
@@ -35,7 +50,12 @@ function Wall:draw_all()
 end
 
 function Wall:clear_all()
-	self.all = {}
+	if #self.all > 0 then
+		for i = 1, #self.all do
+			self.all[i]:delete()
+		end
+		self.all = {}
+	end
 end
 
 -- Lava

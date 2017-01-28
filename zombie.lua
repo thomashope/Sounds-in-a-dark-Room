@@ -25,8 +25,10 @@ function Zombie:init(x, y)
 end
 
 function Zombie:delete()
-	self.body:destroy()
-	self.alive = false
+	if self.alive then
+		self.body:destroy()
+		self.alive = false
+	end
 end
 
 function Zombie:update(dt)
@@ -42,7 +44,7 @@ end
 function Zombie:update_all(dt)
 	-- Update all zombies, remove th eones that are dead
 	local i = 1
-	while i < #self.all do
+	while i <= #self.all do
 		if not self.all[i].alive then
 			table.remove( self.all, i )
 		else
@@ -60,5 +62,10 @@ function Zombie:draw_all()
 end
 
 function Zombie:clear_all()
-	self.all = {}
+	if #self.all > 0 then
+		for i = 1, #self.all do
+			self.all[i]:delete()
+		end
+		self.all = {}
+	end
 end

@@ -1,13 +1,15 @@
 -- Load the required hump modules
-Gamestate = require 'hump/gamestate'
-Camera = require 'hump/camera'
-Timer = require 'hump/timer'
-Class = require 'hump/class'
+Gamestate = require 'hump.gamestate'
+Camera = require 'hump.camera'
+Timer = require 'hump.timer'
+Class = require 'hump.class'
 
 -- Load game modules
 require 'state'
 require 'splash_screen_state'
 require 'main_menu_state'
+require 'pause_menu_state'
+require 'level_select_state'
 require 'playing_state'
 require 'physics'
 require 'level'

@@ -2,12 +2,16 @@
 -- Inherits from Entity
 Player = Class{
 	__includes = Entity,
-	speed = 200,
+	speed = 100,
 	input = 'keyboard',
+	l_foot = true,
 	walk_timer = 0,
 	walk_speed = 1/2.5,		-- steps per second
 	size = 10,
-	name = 'player'
+	name = 'player',
+	sonar_sounds = {},
+	l_foot_sounds = {},
+	r_foot_sounds = {}
 }
 
 -- Constructor
@@ -19,6 +23,28 @@ function Player:init(x, y)
 	self.fixture = love.physics.newFixture( self.body, self.shape, 1 )
 	self.fixture:setRestitution( 0 )
 	self.fixture:setUserData( self )
+
+	self.sonar_sounds = Audio.load('audio/player/sonar',{
+		'Sonar_Player_01.wav',
+		'Sonar_Player_02.wav',
+		'Sonar_Player_03.wav'
+		})
+
+	self.l_foot_sounds = Audio.load('audio/player/footsteps',{
+		'Left_Foot_Player_Walk_01.wav',
+		'Left_Foot_Player_Walk_02.wav',
+		'Left_Foot_Player_Walk_03.wav',
+		'Left_Foot_Player_Walk_04.wav',
+		'Left_Foot_Player_Walk_05.wav'
+		})
+
+	self.r_foot_sounds = Audio.load('audio/player/footsteps',{
+		'Right_Foot_Player_Walk_01.wav',
+		'Right_Foot_Player_Walk_02.wav',
+		'Right_Foot_Player_Walk_03.wav',
+		'Right_Foot_Player_Walk_04.wav',
+		'Right_Foot_Player_Walk_05.wav'
+		})
 end
 
 function Player:delete()
@@ -31,6 +57,7 @@ function Player:update(dt)
 	self.x = self.body:getX()
 	self.y = self.body:getY()
 	camera:lookAt( self.x, self.y )
+	Audio.set_listener( self.x, self.y )
 
 	if self.alive then
 		self:update_movement(dt)
@@ -115,6 +142,12 @@ function Player:update_movement(dt)
 	if self.walk_timer > self.walk_speed then
 		Pulse(self.x, self.y, 0, 20, 1)
 		self.walk_timer = 0
+		if self.l_foot then
+			Audio.play_random_at(self.l_foot_sounds, self.x, self.y)
+		else
+			Audio.play_random_at(self.r_foot_sounds, self.x, self.y)
+		end
+		self.l_foot = not self.l_foot
 	end
 end
 
@@ -124,6 +157,7 @@ end
 
 function Player:use_sonar()
 	Sonar(self.x, self.y)
+	Audio.play_random_at(self.sonar_sounds, self.x, self.y)
 end
 
 function Player:draw()

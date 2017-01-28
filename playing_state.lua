@@ -5,12 +5,13 @@ function playing_state:init()
 end
 
 function playing_state:enter()
-	Level.load("level4.png")
+	love.graphics.setBackgroundColor(self.bg)
 end
 
 function playing_state:update(dt)
 	Pulse:update_all(dt)
 	Sonar:update_all(dt)
+	Wall:update_all(dt)
 	Zombie:update_all(dt)
 
 	player:update(dt)
@@ -18,8 +19,6 @@ end
 
 function playing_state:draw()
 	camera:attach()
-
-	love.graphics.setBackgroundColor(self.bg)
 
     Lava:draw_all()
     Pulse:draw_all()
@@ -33,7 +32,15 @@ function playing_state:draw()
 end
 
 function playing_state:keypressed( keycode, scancode, isrepeat )
-	if scancode == "space" then
+	if scancode == 'space' then
 		player:use_sonar()
+	elseif scancode == 'escape' then
+		Gamestate.push(pause_menu_state)
+	end
+end
+
+function playing_state:focus( f )
+	if not f then
+		Gamestate.push(pause_menu_state)
 	end
 end

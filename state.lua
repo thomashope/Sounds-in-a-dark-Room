@@ -2,15 +2,15 @@ State = Class{
 	bg = {0, 0, 0},
 }
 
-function State:add_entity( e )
-	table.insert( self.entities, e )
-end
-
 MenuState = Class{
 	__includes = State,
 	index = 1,
 	items = {}
 }
+
+function MenuState:enter()
+	self.index = 1
+end
 
 function MenuState:keypressed( keycode, scancode, isrepeat )
 	if scancode == "up" then
@@ -25,6 +25,6 @@ function MenuState:keypressed( keycode, scancode, isrepeat )
 
 	else
 		-- call the function that is the name of the selected item
-		self[self.items[self.index]]( keycode, scancode, isrepeat )
+		self[self.items[self.index]]( self, keycode, scancode, isrepeat )
 	end
 end

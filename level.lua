@@ -1,6 +1,10 @@
-Level = {}
+Level = {
+	loaded = ''
+}
 
 function Level.load(filename)
+	Level.clear()
+
 	local scale = Wall.size
 	local image = love.image.newImageData("levels/"..filename)
 
@@ -27,10 +31,18 @@ function Level.load(filename)
 		end
 		io.write('\n')
 	end
+
+	Level.loaded = filename
+end
+
+function Level.restart()
+	Level.clear()
+	Level.load(Level.loaded)
 end
 
 function Level.clear()
 	Zombie:clear_all()
 	Pulse:clear_all()
 	Wall:clear_all()
+	Lava:clear_all()
 end

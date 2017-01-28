@@ -80,8 +80,8 @@ end
 function Sonar:draw_all()
 	love.graphics.setLineWidth(3)
 	for i = 1, #self.all do
-		love.graphics.setColor(0, 80, 255, 200 * (1-(self.all[i].age/self.all[i].lifetime)) + 30 )
+		love.graphics.setColor(255, 255, 255, 200 * (1-(self.all[i].age/self.all[i].lifetime)) + 30 )
 		love.graphics.circle('line', self.all[i].x, self.all[i].y, self.all[i].start_radius + (self.all[i].end_radius - self.all[i].start_radius) * (self.all[i].age/self.all[i].lifetime) + 2 )
-		love.graphics.circle('fill', self.all[i].x, self.all[i].y, self.all[i].start_radius + (self.all[i].end_radius - self.all[i].start_radius) * (self.all[i].age/self.all[i].lifetime) + 2 )
+		-- love.graphics.circle('fill', self.all[i].x, self.all[i].y, self.all[i].start_radius + (self.all[i].end_radius - self.all[i].start_radius) * (self.all[i].age/self.all[i].lifetime) + 2 )
 	end
 end
