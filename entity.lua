@@ -2,7 +2,8 @@
 Entity = Class{
 	x = 0,
 	y = 0,
-	alive = true
+	alive = true,
+	name = 'entity'
 }
 
 function Entity:init(x, y)

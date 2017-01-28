@@ -1,5 +1,6 @@
 -- Load the required hump modules
 Gamestate = require 'hump/gamestate'
+Camera = require 'hump/camera'
 Timer = require 'hump/timer'
 Class = require 'hump/class'
 
@@ -9,10 +10,12 @@ require 'splash_screen_state'
 require 'main_menu_state'
 require 'playing_state'
 require 'physics'
+require 'level'
 require 'audio'
 require 'entity'
 require 'pulse'
 require 'player'
+require 'zombie'
 require 'wall'
 
 function love.load()
@@ -22,7 +25,8 @@ function love.load()
 	-- Set globals
 	window_width, window_height = love.graphics.getDimensions()
 
-	player = Player(300, 300)
+	player = Player(0, 0)
+	camera = Camera(player.x, player.y)
 
 	-- Initialise the game states
 	Gamestate.registerEvents()

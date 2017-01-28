@@ -6,9 +6,11 @@ Player = Class{
 	input = 'keyboard',
 	walk_timer = 0,
 	walk_speed = 1/2.5,		-- steps per second
-	size = 10
+	size = 10,
+	name = 'player'
 }
 
+-- Constructor
 function Player:init(x, y)
 	self.x, self.y = x, y
 
@@ -16,6 +18,7 @@ function Player:init(x, y)
 	self.shape = love.physics.newCircleShape( self.size )
 	self.fixture = love.physics.newFixture( self.body, self.shape, 1 )
 	self.fixture:setRestitution( 0 )
+	self.fixture:setUserData( self )
 end
 
 function Player:delete()
@@ -27,12 +30,10 @@ function Player:update(dt)
 
 	self.x = self.body:getX()
 	self.y = self.body:getY()
+	camera:lookAt( self.x, self.y )
 
-	-- Only update movement if the player is alive
 	if self.alive then
-
 		self:update_movement(dt)
-
 	end
 end
 
@@ -115,6 +116,10 @@ function Player:update_movement(dt)
 		Pulse(self.x, self.y, 0, 20, 1)
 		self.walk_timer = 0
 	end
+end
+
+function Player:set_position(x, y)
+	self.body:setPosition(x, y)
 end
 
 function Player:use_sonar()

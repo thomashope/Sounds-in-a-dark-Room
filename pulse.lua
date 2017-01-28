@@ -38,11 +38,10 @@ function Pulse:update_all(dt)
 	-- Update all pulses, remove the ones that are dead
 	local i = 1
 	while i <= #self.all do
-		self.all[i]:update(dt)
-
 		if not self.all[i].alive then
 			table.remove( self.all, i )
 		else
+			self.all[i]:update(dt)
 			i = i + 1
 		end
 	end

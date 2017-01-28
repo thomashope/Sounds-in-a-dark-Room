@@ -1,0 +1,36 @@
+Level = {}
+
+function Level.load(filename)
+	local scale = Wall.size
+	local image = love.image.newImageData("levels/"..filename)
+
+	for y = 0, image:getHeight()-1 do
+		for x = 0, image:getWidth()-1 do
+			local r, g, b, a = image:getPixel(x, y)
+
+			if r == 0 and g == 0 and b == 0 then
+				io.write('W')
+				Wall(x*scale, y*scale)
+			elseif r == 255 and g == 0 and b == 0 then
+				io.write('L')
+				Lava(x*scale, y*scale)
+			elseif g == 255 and r == 0 and b == 0 then
+				io.write('Z')
+				Zombie(x*scale, y*scale)
+			elseif r == 0 and g == 0 and b == 255 then
+				io.write('P')
+				player:set_position(x*scale, y*scale)
+				-- player:setPosition(x * scale, y * scale)
+			else
+				io.write(' ')
+			end
+		end
+		io.write('\n')
+	end
+end
+
+function Level.clear()
+	Zombie:clear_all()
+	Pulse:clear_all()
+	Wall:clear_all()
+end
