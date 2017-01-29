@@ -171,6 +171,8 @@ function Player:use_sonar()
 
 		local inc = (3.1415*2)/200
 		local xdir, ydir, speed = 0, 1, 150
+		-- give an initial random offset
+		xdir, ydir = Vector.rotate(love.math.random(), xdir, ydir)
 		for i = 1, 200 do
 			xdir, ydir = Vector.rotate(inc, xdir, ydir)
 			Pip(self.x, self.y, xdir * speed, ydir * speed, 0)

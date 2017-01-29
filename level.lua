@@ -15,6 +15,7 @@ function Level.load(filename)
 
 			if r == 0 and g == 0 and b == 0 then
 				io.write('W')
+				-- TODO: optimise walls into fewer larger objects where possible
 				Wall(x*scale, y*scale)
 			elseif r == 255 and g == 0 and b == 0 then
 				io.write('L')
@@ -45,4 +46,5 @@ function Level.clear()
 	Pulse:clear_all()
 	Wall:clear_all()
 	Lava:clear_all()
+	Pip:clear_all()
 end

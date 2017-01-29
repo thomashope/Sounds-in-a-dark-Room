@@ -74,7 +74,7 @@ Pip = Class{
 function Pip:init(x, y, xdir, ydir, age, health)
 	self.body = love.physics.newBody( Physics.world, x, y, 'dynamic' )
 	self.shape = love.physics.newCircleShape( 2 )
-	self.fixture = love.physics.newFixture(self.body, self.shape, 1)
+	self.fixture = love.physics.newFixture(self.body, self.shape, 0.01)
 	self.fixture:setMask(1)
 	self.fixture:setUserData(self)
 	self.body:setLinearVelocity(xdir, ydir)
@@ -126,11 +126,20 @@ function Pip:update_all(dt)
 end
 
 function Pip:draw_all()
-	love.graphics.setPointSize(2)
+	love.graphics.setPointSize(3)
 	for i = 1, #self.all do
 		love.graphics.setColor(255, 255, 255, (1-(self.all[i].age/self.lifetime)) * 255)
 		love.graphics.points( self.all[i].body:getX(), self.all[i].body:getY() )
 	end
+end
+
+function Pip:clear_all()
+	for i = 1, #self.all do
+		-- delete all the bodies
+		self.all[i].body:delete()
+	end
+	-- set the vector to empty
+	self.all = {}
 end
 
 -- Sonar

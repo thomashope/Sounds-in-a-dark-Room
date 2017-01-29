@@ -61,7 +61,7 @@ function Physics.begin_contact( a, b, contact )
 			local rx, ry = Vector.mirror( vx, vy, nx, ny ) -- reflected velocity
 			-- local speed = Vector.len( pip.body:getLinearVelocity() )
 
-			Pip:enqueue(x + nx * 10, y + ny * 10, -rx, -ry, pip.age, pip.health - 1)
+			Pip:enqueue(x + nx * 5, y + ny * 5, -rx, -ry, pip.age, pip.health - 1)
 			-- Pip:enqueue(x + nx * 10, y + ny * 10, nx * speed, ny * speed, pip.age, pip.health - 1)
 			-- nx, ny = Vector.rotate(0.1, nx, ny)
 			-- Pip:enqueue(x + nx * 10, y + ny * 10, nx * speed, ny * speed, pip.age, pip.health - 1)

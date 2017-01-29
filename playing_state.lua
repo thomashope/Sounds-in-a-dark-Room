@@ -1,7 +1,8 @@
 playing_state = State()
 
 function playing_state:init()
-	self.bg = {100, 100, 100}
+	self.bg = {0, 0, 0}
+	self.pips = love.graphics.newCanvas(window_width, window_heigt)
 end
 
 function playing_state:enter()
@@ -26,8 +27,28 @@ function playing_state:draw()
     Sonar:draw_all()
     Wall:draw_all()
     Zombie:draw_all()
-		Pip:draw_all()
 
+	camera:detach()
+
+	love.graphics.setBlendMode('alpha')
+    love.graphics.setCanvas(self.pips)
+    love.graphics.setColor(0, 0, 0, 20)
+    love.graphics.rectangle('fill', 0, 0, window_width, window_height)
+    camera:attach()
+
+    camera:lookAt(player.x, player.y)
+	Pip:draw_all()
+
+	camera:detach()
+
+	love.graphics.setCanvas()
+	love.graphics.setBlendMode('add')
+	love.graphics.setColor(255, 255, 255)
+	love.graphics.draw(self.pips, 0, 0)
+	love.graphics.setBlendMode('alpha')
+
+	camera:attach()
+    camera:lookAt(player.x, player.y)
     player:draw()
 
     camera:detach()
