@@ -2,6 +2,9 @@ playing_state = State()
 
 function playing_state:init()
 	self.bg = {0, 0, 0}
+	-- TODO: incorporate canvas into object
+	-- TODO: resize canvas on window resize
+	-- TODO: apply nice effects like bloom?
 	self.pips = love.graphics.newCanvas(window_width, window_heigt)
 end
 
@@ -23,7 +26,6 @@ function playing_state:draw()
 	camera:attach()
 
     Lava:draw_all()
-    Pulse:draw_all()
     Sonar:draw_all()
     Wall:draw_all()
     Zombie:draw_all()
@@ -38,6 +40,7 @@ function playing_state:draw()
 
     camera:lookAt(player.x, player.y)
 	Pip:draw_all()
+    Pulse:draw_all()
 
 	camera:detach()
 

@@ -146,7 +146,7 @@ function Player:update_movement(dt)
 	end
 
 	if self.walk_timer > self.walk_speed then
-		Pulse(self.x, self.y, 0, 20, 1)
+		Pulse(self.x, self.y, 150, 150, 0.5)
 		self.walk_timer = 0
 		if self.l_foot then
 			Audio.play_random_at(self.l_foot_sounds, self.x, self.y)
@@ -164,16 +164,15 @@ end
 function Player:use_sonar()
 	-- Sonar(self.x, self.y)
 	if self.sonar_timer > self.sonar_rate then
-		print(self.sonar_timer)
 		self.sonar_timer = 0
 
 		Audio.play_random_at(self.sonar_sounds, self.x, self.y)
 
-		local inc = (3.1415*2)/200
+		local inc = (math.pi*2)/300
 		local xdir, ydir, speed = 0, 1, 150
 		-- give an initial random offset
 		xdir, ydir = Vector.rotate(love.math.random(), xdir, ydir)
-		for i = 1, 200 do
+		for i = 1, 300 do
 			xdir, ydir = Vector.rotate(inc, xdir, ydir)
 			Pip(self.x, self.y, xdir * speed, ydir * speed, 0)
 		end

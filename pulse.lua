@@ -7,15 +7,42 @@ Pulse = Class{
 	end_radius = 10,
 	lifetime = 1,
 	age = 0,
+	pips = {},
 	all = {}				-- Contains all instances of Pulse, Each subclass uses it's own table
 }
 
 -- Constructor
-function Pulse:init(x, y, start_radius, end_radius, lifetime)
+-- function Pulse:init(x, y, start_radius, end_radius, lifetime)
+-- 	self.x, self.y = x, y
+-- 	self.start_radius = start_radius
+-- 	self.end_radius = end_radius
+-- 	self.lifetime = lifetime
+
+-- 	table.insert( Pulse.all, self )
+-- end
+
+function Pulse:init(x, y, speed, count, lifetime)
 	self.x, self.y = x, y
-	self.start_radius = start_radius
-	self.end_radius = end_radius
+	self.pips = {}
 	self.lifetime = lifetime
+
+	local shape = love.physics.newCircleShape(2)
+	local xdir, ydir = 0, 1
+	local incr = (math.pi*2)/count
+
+	for i = 1, count do
+		local fixture = love.physics.newFixture(
+			love.physics.newBody(Physics.world, x, y, 'dynamic'),
+			love.physics.newCircleShape(2),
+			0.01 )
+		fixture:setRestitution(1)
+		fixture:setUserData({name='pip'}) -- 
+		fixture:setMask(1)
+		fixture:getBody():setLinearVelocity(xdir*speed, ydir*speed)
+		xdir, ydir = Vector.rotate(incr, xdir, ydir)
+
+		table.insert( self.pips, fixture )
+	end
 
 	table.insert( Pulse.all, self )
 end
@@ -25,13 +52,24 @@ function Pulse:update(dt)
 		self.age = self.age + dt
 		if self.age > self.lifetime then
 			self.alive = false
+
+			-- Remove all the pips
+			for i = 1, #self.pips do
+				self.pips[i]:destroy()
+			end
+			self.pips = {}
 		end
 	end
 end
 
 function Pulse:draw()
-	love.graphics.setColor(255, 255, 255)
-	love.graphics.circle('line', self.x, self.y, self.start_radius + (self.end_radius - self.start_radius) * (self.age/self.lifetime) )
+	-- love.graphics.circle('line', self.x, self.y, self.start_radius + (self.end_radius - self.start_radius) * (self.age/self.lifetime) )
+	if self.alive then
+		love.graphics.setColor(255, 255, 255, 300*(1-(self.age / self.lifetime)) )
+		for i = 1, #self.pips do
+			love.graphics.points(self.pips[i]:getBody():getPosition())
+		end
+	end
 end
 
 function Pulse:update_all(dt)
@@ -48,11 +86,12 @@ function Pulse:update_all(dt)
 end
 
 function Pulse:draw_all()
-	love.graphics.setLineWidth(2)
+	-- love.graphics.setLineWidth(2)
 	for i = 1, #self.all do
-		love.graphics.setColor(255, 255, 255, 200 * (1-(self.all[i].age/self.all[i].lifetime)) + 30 )
-		love.graphics.circle('line', self.all[i].x, self.all[i].y, self.all[i].start_radius + (self.all[i].end_radius - self.all[i].start_radius) * (self.all[i].age/self.all[i].lifetime) + 1 )
-		love.graphics.circle('fill', self.all[i].x, self.all[i].y, self.all[i].start_radius + (self.all[i].end_radius - self.all[i].start_radius) * (self.all[i].age/self.all[i].lifetime) + 1 )
+		self.all[i]:draw()
+		-- love.graphics.setColor(255, 255, 255, 200 * (1-(self.all[i].age/self.all[i].lifetime)) + 30 )
+		-- love.graphics.circle('line', self.all[i].x, self.all[i].y, self.all[i].start_radius + (self.all[i].end_radius - self.all[i].start_radius) * (self.all[i].age/self.all[i].lifetime) + 1 )
+		-- love.graphics.circle('fill', self.all[i].x, self.all[i].y, self.all[i].start_radius + (self.all[i].end_radius - self.all[i].start_radius) * (self.all[i].age/self.all[i].lifetime) + 1 )
 	end
 end
 
@@ -71,12 +110,14 @@ Pip = Class{
 	queue = {}
 }
 
+-- Constructor
 function Pip:init(x, y, xdir, ydir, age, health)
 	self.body = love.physics.newBody( Physics.world, x, y, 'dynamic' )
 	self.shape = love.physics.newCircleShape( 2 )
 	self.fixture = love.physics.newFixture(self.body, self.shape, 0.01)
 	self.fixture:setMask(1)
 	self.fixture:setUserData(self)
+	self.fixture:setRestitution(1)
 	self.body:setLinearVelocity(xdir, ydir)
 	self.age = age
 
@@ -89,6 +130,14 @@ end
 
 function Pip:enqueue(x, y, xdir, ydir, age, health)
 	table.insert(self.queue, {x, y, xdir, ydir, age, health})
+end
+
+function Pip:redirect(x, y, xdir, ydir)
+	self.changed = true
+	self.x = x
+	self.y = y
+	self.xdir = xdir
+	self.ydir = ydir
 end
 
 function Pip:update_all(dt)
@@ -115,6 +164,13 @@ function Pip:update_all(dt)
 	local i = 1
 	while i <= #self.all do
 		if self.all[i].alive then
+			-- If it changed, apply changes
+			if self.all[i].changed then
+				self.all[i].body:setPosition(self.all[i].x, self.all[i].y)
+				self.all[i].body:setLinearVelocity(self.all[i].xdir, self.all[i].ydir)
+				self.all[i].changed = nil
+			end
+
 			self.all[i].age = self.all[i].age + dt
 			if self.all[i].age > Pip.lifetime then self.all[i].alive = false end
 			i = i + 1
@@ -136,7 +192,7 @@ end
 function Pip:clear_all()
 	for i = 1, #self.all do
 		-- delete all the bodies
-		self.all[i].body:delete()
+		self.all[i].body:destroy()
 	end
 	-- set the vector to empty
 	self.all = {}

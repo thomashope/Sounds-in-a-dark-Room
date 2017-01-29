@@ -47,11 +47,13 @@ function Physics.begin_contact( a, b, contact )
 
 	if a:getUserData().name == 'pip' or b:getUserData().name == 'pip' then
 
+		-- TODO: reposition and set velocity of original pip, rather than creating a new one
+--[[
 		local pip = nil
 		if a:getUserData().name == 'pip' then pip = a:getUserData() end
 		if b:getUserData().name == 'pip' then pip = b:getUserData() end
 		-- Kill the pip as soon as it touches something
-		pip.alive = false
+		-- pip.alive = false
 
 		-- If this pip has health left, spawn some children
 		if pip.health > 0 then
@@ -61,13 +63,14 @@ function Physics.begin_contact( a, b, contact )
 			local rx, ry = Vector.mirror( vx, vy, nx, ny ) -- reflected velocity
 			-- local speed = Vector.len( pip.body:getLinearVelocity() )
 
-			Pip:enqueue(x + nx * 5, y + ny * 5, -rx, -ry, pip.age, pip.health - 1)
+			pip:redirect(x+nx*5,y+ny*5,-rx,-ry)
+			--Pip:enqueue(x + nx * 5, y + ny * 5, -rx, -ry, pip.age, pip.health - 1)
 			-- Pip:enqueue(x + nx * 10, y + ny * 10, nx * speed, ny * speed, pip.age, pip.health - 1)
 			-- nx, ny = Vector.rotate(0.1, nx, ny)
 			-- Pip:enqueue(x + nx * 10, y + ny * 10, nx * speed, ny * speed, pip.age, pip.health - 1)
 			-- nx, ny = Vector.rotate(-0.2, nx, ny)
 			-- Pip:enqueue(x + nx * 10, y + ny * 10, nx * speed, ny * speed, pip.age, pip.health - 1)
-		end
+		end]]
 	end
 end
 
