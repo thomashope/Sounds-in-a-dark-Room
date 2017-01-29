@@ -19,6 +19,7 @@ function Zombie:init(x, y)
 	self.shape = love.physics.newCircleShape( self.size )
 	self.fixture = love.physics.newFixture( self.body, self.shape, 1 )
 	self.fixture:setRestitution( 0 )
+	self.fixture:setCategory(2)
 	self.fixture:setUserData( self )
 
 	table.insert( Zombie.all, self )

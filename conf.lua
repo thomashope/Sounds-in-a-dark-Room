@@ -3,4 +3,5 @@ function love.conf(t)
     t.window.title = 'Sounds in a Dark Room'
     t.window.icon = 'images/icon.png'
     t.window.resizable = true
+    t.window.vsync = true
 end

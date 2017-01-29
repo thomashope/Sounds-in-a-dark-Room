@@ -44,6 +44,31 @@ function Physics.begin_contact( a, b, contact )
 	elseif (b:getUserData().name == 'player' and a:getUserData().name == 'zombie') then
 		player_vs_zombie(b:getUserData(), a:getUserData(), contact)
 	end
+
+	if a:getUserData().name == 'pip' or b:getUserData().name == 'pip' then
+
+		local pip = nil
+		if a:getUserData().name == 'pip' then pip = a:getUserData() end
+		if b:getUserData().name == 'pip' then pip = b:getUserData() end
+		-- Kill the pip as soon as it touches something
+		pip.alive = false
+
+		-- If this pip has health left, spawn some children
+		if pip.health > 0 then
+			local nx, ny = contact:getNormal() -- normal vector`
+			local x, y = contact:getPositions() -- position of contact
+			local vx, vy = pip.body:getLinearVelocity()	-- velocity of the incident pip
+			local rx, ry = Vector.mirror( vx, vy, nx, ny ) -- reflected velocity
+			-- local speed = Vector.len( pip.body:getLinearVelocity() )
+
+			Pip:enqueue(x + nx * 10, y + ny * 10, -rx, -ry, pip.age, pip.health - 1)
+			-- Pip:enqueue(x + nx * 10, y + ny * 10, nx * speed, ny * speed, pip.age, pip.health - 1)
+			-- nx, ny = Vector.rotate(0.1, nx, ny)
+			-- Pip:enqueue(x + nx * 10, y + ny * 10, nx * speed, ny * speed, pip.age, pip.health - 1)
+			-- nx, ny = Vector.rotate(-0.2, nx, ny)
+			-- Pip:enqueue(x + nx * 10, y + ny * 10, nx * speed, ny * speed, pip.age, pip.health - 1)
+		end
+	end
 end
 
 function Physics.end_contact( a, b, contact )

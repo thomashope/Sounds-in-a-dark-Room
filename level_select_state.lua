@@ -74,12 +74,12 @@ function level_select_state:draw()
 		if self.items[i] == 'level' then
 			item = self.level_list[self.level_index]
 		end
-		
+
 		-- prepend > to indicate the selected item
 		if i == self.index then
 			item = '> '..item
 		end
 
-		love.graphics.print(item, 20, 80 + 20 * i)
+		love.graphics.print(item, 20, 50 + 20 * i)
 	end
 end

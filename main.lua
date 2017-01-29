@@ -3,6 +3,7 @@ Gamestate = require 'hump.gamestate'
 Camera = require 'hump.camera'
 Timer = require 'hump.timer'
 Class = require 'hump.class'
+Vector = require 'hump.vector-light'
 
 -- Load game modules
 require 'state'

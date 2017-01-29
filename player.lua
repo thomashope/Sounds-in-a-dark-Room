@@ -5,6 +5,8 @@ Player = Class{
 	speed = 100,
 	input = 'keyboard',
 	l_foot = true,
+	sonar_timer = 0,			-- time since last pulse
+	sonar_rate = 0.1,			-- min time between pulses
 	walk_timer = 0,
 	walk_speed = 1/2.5,		-- steps per second
 	size = 10,
@@ -23,6 +25,9 @@ function Player:init(x, y)
 	self.fixture = love.physics.newFixture( self.body, self.shape, 1 )
 	self.fixture:setRestitution( 0 )
 	self.fixture:setUserData( self )
+	-- NOTE: players are in catagory 1
+	--- use setMask(1) to make objects NOT collide with the player
+	self.fixture:setCategory(1)
 
 	self.sonar_sounds = Audio.load('audio/player/sonar',{
 		'Sonar_Player_01.wav',
@@ -53,6 +58,7 @@ function Player:delete()
 end
 
 function Player:update(dt)
+	self.sonar_timer = self.sonar_timer + dt
 
 	self.x = self.body:getX()
 	self.y = self.body:getY()
@@ -156,8 +162,20 @@ function Player:set_position(x, y)
 end
 
 function Player:use_sonar()
-	Sonar(self.x, self.y)
-	Audio.play_random_at(self.sonar_sounds, self.x, self.y)
+	-- Sonar(self.x, self.y)
+	if self.sonar_timer > self.sonar_rate then
+		print(self.sonar_timer)
+		self.sonar_timer = 0
+
+		Audio.play_random_at(self.sonar_sounds, self.x, self.y)
+
+		local inc = (3.1415*2)/200
+		local xdir, ydir, speed = 0, 1, 150
+		for i = 1, 200 do
+			xdir, ydir = Vector.rotate(inc, xdir, ydir)
+			Pip(self.x, self.y, xdir * speed, ydir * speed, 0)
+		end
+	end
 end
 
 function Player:draw()

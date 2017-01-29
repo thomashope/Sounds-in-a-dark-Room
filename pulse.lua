@@ -60,6 +60,79 @@ function Pulse:clear_all()
 	self.all = {}
 end
 
+-- Pip
+Pip = Class{
+	__includes = Entity,
+	name = 'pip',
+	age = 0,
+	lifetime = 2,
+	health = 2,
+	all = {},
+	queue = {}
+}
+
+function Pip:init(x, y, xdir, ydir, age, health)
+	self.body = love.physics.newBody( Physics.world, x, y, 'dynamic' )
+	self.shape = love.physics.newCircleShape( 2 )
+	self.fixture = love.physics.newFixture(self.body, self.shape, 1)
+	self.fixture:setMask(1)
+	self.fixture:setUserData(self)
+	self.body:setLinearVelocity(xdir, ydir)
+	self.age = age
+
+	if age ~= 0 then
+		self.health = health
+	end
+
+	table.insert( Pip.all, self )
+end
+
+function Pip:enqueue(x, y, xdir, ydir, age, health)
+	table.insert(self.queue, {x, y, xdir, ydir, age, health})
+end
+
+function Pip:update_all(dt)
+	-- first clear the queue
+	for i = 1, #self.queue do
+		Pip(self.queue[i][1], self.queue[i][2],	-- x and y position
+			self.queue[i][3], self.queue[i][4],		-- x and y direction
+			self.queue[i][5],		-- starting age
+			self.queue[i][6])		-- starting health
+	end
+	self.queue = {}
+
+	-- Cap the max number of pips at an arbitary value
+	local size = #self.all
+	if size > 2000 then
+		local diff = size - 2000
+		for i=1, diff do
+			self.all[i].alive = false
+		end
+		print('removed', diff)
+	end
+
+	-- Then update all the objects
+	local i = 1
+	while i <= #self.all do
+		if self.all[i].alive then
+			self.all[i].age = self.all[i].age + dt
+			if self.all[i].age > Pip.lifetime then self.all[i].alive = false end
+			i = i + 1
+		else
+			self.all[i].body:destroy()
+			table.remove( self.all, i )
+		end
+	end
+end
+
+function Pip:draw_all()
+	love.graphics.setPointSize(2)
+	for i = 1, #self.all do
+		love.graphics.setColor(255, 255, 255, (1-(self.all[i].age/self.lifetime)) * 255)
+		love.graphics.points( self.all[i].body:getX(), self.all[i].body:getY() )
+	end
+end
+
 -- Sonar
 -- emitted by the player when they press A
 -- Inherits from Pulse

@@ -13,6 +13,7 @@ function playing_state:update(dt)
 	Sonar:update_all(dt)
 	Wall:update_all(dt)
 	Zombie:update_all(dt)
+	Pip:update_all(dt)
 
 	player:update(dt)
 end
@@ -25,6 +26,7 @@ function playing_state:draw()
     Sonar:draw_all()
     Wall:draw_all()
     Zombie:draw_all()
+		Pip:draw_all()
 
     player:draw()
 

@@ -7,12 +7,13 @@ Wall = Class{
 
 function Wall:init(x, y)
 	self.x, self.y = x, y
-	
+
 	self.body = love.physics.newBody( Physics.world, self.x, self.y, 'static' )
 	self.shape = love.physics.newRectangleShape( self.size, self.size )
 	self.fixture = love.physics.newFixture( self.body, self.shape, 1 )
 	self.fixture:setRestitution( 0 )
 	self.fixture:setUserData( self )
+	self.fixture:setCategory( 2 )
 
 	table.insert( Wall.all, self )
 end
