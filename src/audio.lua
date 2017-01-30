@@ -5,7 +5,7 @@ Audio = {
 function Audio.load( folder, list )
 	local result = {}
 	for i = 1, #list do
-		local source = love.audio.newSource( folder..'/'..list[i], 'static' )
+		local source = love.audio.newSource( 'res/'..folder..'/'..list[i], 'static' )
 		table.insert( result, source )
 	end
 

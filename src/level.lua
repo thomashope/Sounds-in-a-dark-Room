@@ -9,7 +9,7 @@ function Level.load(filename)
 	Level.clear()
 
 	local scale = Wall.size
-	local image = love.image.newImageData("levels/"..filename)
+	local image = love.image.newImageData("res/levels/"..filename)
 
 	print('Loading ', filename)
 	for y = 0, image:getHeight()-1 do

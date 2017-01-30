@@ -1,5 +1,7 @@
 # Sounds-in-a-dark-Room
 
+![header gif](./sounds.gif)
+
 Coming soon to Itch.io ...
 
 Watch development on the [trello board](https://trello.com/b/2j1AVdUt/sounds-in-a-dark-room-ggj2017)!

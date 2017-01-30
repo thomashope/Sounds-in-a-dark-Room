@@ -3,7 +3,7 @@ function love.conf(t)
     t.console = false
 
     t.window.title = 'Sounds in a Dark Room'
-    t.window.icon = 'images/icon.png'
+    t.window.icon = 'res/images/icon.png'
     t.window.resizable = true
     t.window.vsync = true
 end

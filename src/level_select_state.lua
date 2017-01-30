@@ -53,7 +53,7 @@ local function GetFileExtension(str)
 end
 
 function level_select_state:update_level_list()
-	local items = love.filesystem.getDirectoryItems('levels')
+	local items = love.filesystem.getDirectoryItems('res/levels')
 	self.level_list = {}
 
 	-- only add PNGs to the level list
