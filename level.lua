@@ -51,5 +51,4 @@ function Level.clear()
 	Pulse:clear_all()
 	Wall:clear_all()
 	Lava:clear_all()
-	Pip:clear_all()
 end

@@ -20,10 +20,8 @@ function playing_state:update(dt)
 	Physics.update(dt)
 
 	Pulse:update_all(dt)
-	Sonar:update_all(dt)
 	Wall:update_all(dt)
 	Zombie:update_all(dt)
-	-- Pip:update_all(dt)
 
 	player:update(dt)
 
@@ -38,7 +36,6 @@ function playing_state:draw()
 	camera:attach()
 
     Lava:draw_all()
-    -- Sonar:draw_all()
     Wall:draw_all()
 
 	camera:detach()
@@ -51,7 +48,6 @@ function playing_state:draw()
     camera:attach()
 
     camera:lookAt(player.x, player.y)
-	-- Pip:draw_all()
     Pulse:draw_all()
 
 	camera:detach()
