@@ -1,9 +1,9 @@
 -- Load the required hump modules
-Gamestate = require 'hump.gamestate'
-Camera = require 'hump.camera'
-Timer = require 'hump.timer'
-Class = require 'hump.class'
-Vector = require 'hump.vector-light'
+Gamestate = require 'lib.hump.gamestate'
+Camera = require 'lib.hump.camera'
+Timer = require 'lib.hump.timer'
+Class = require 'lib.hump.class'
+Vector = require 'lib.hump.vector-light'
 
 -- Load game modules
 require 'state'
