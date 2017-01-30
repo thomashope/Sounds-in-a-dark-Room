@@ -8,11 +8,11 @@ function pause_menu_state:init()
 	self.zombie_death_messages = {}
 	self.entry_condition = ''
 
-	for line in love.filesystem.lines("text/killed_by_zombie.txt") do
+	for line in love.filesystem.lines("res/text/killed_by_zombie.txt") do
 	  table.insert(self.zombie_death_messages, line)
 	end
 
-	for line in love.filesystem.lines("text/killed_by_lava.txt") do
+	for line in love.filesystem.lines("res/text/killed_by_lava.txt") do
 	  table.insert(self.lava_death_messages, line)
 	end
 end
