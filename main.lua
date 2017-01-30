@@ -44,6 +44,7 @@ end
 function love.resize(w,h)
 	window_width = w
 	window_height = h
+	playing_state.pips = love.graphics.newCanvas(w, h)
 end
 
 function love.joystickadded( joystick )

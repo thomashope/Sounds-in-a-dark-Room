@@ -1,5 +1,8 @@
 Level = {
-	loaded = ''
+	loaded = '',
+	start_time = 0,
+	finish_time = 0,
+	won = false
 }
 
 function Level.load(filename)
@@ -25,7 +28,7 @@ function Level.load(filename)
 				Zombie(x*scale, y*scale)
 			elseif r == 0 and g == 0 and b == 255 then
 				io.write('P')
-				player:set_position(x*scale, y*scale)
+				player:spawn(x*scale, y*scale)
 			else
 				io.write(' ')
 			end
@@ -34,6 +37,8 @@ function Level.load(filename)
 	end
 
 	Level.loaded = filename
+	Level.won = false
+	Level.start_time = love.timer.getTime()
 end
 
 function Level.restart()

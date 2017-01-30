@@ -12,6 +12,8 @@ Player = Class{
 	size = 10,
 	name = 'player',
 	sonar_sounds = {},
+	lava_death_sounds = {},
+	zombie_death_sounds = {},
 	l_foot_sounds = {},
 	r_foot_sounds = {}
 }
@@ -21,8 +23,8 @@ function Player:init(x, y)
 	self.x, self.y = x, y
 
 	self.body = love.physics.newBody( Physics.world, self.x, self.y, 'dynamic')
-	self.shape = love.physics.newCircleShape( self.size )
-	self.fixture = love.physics.newFixture( self.body, self.shape, 1 )
+	local shape = love.physics.newCircleShape( self.size )
+	self.fixture = love.physics.newFixture( self.body, shape, 1 )
 	self.fixture:setRestitution( 0 )
 	self.fixture:setUserData( self )
 	-- NOTE: players are in catagory 1
@@ -32,24 +34,50 @@ function Player:init(x, y)
 	self.sonar_sounds = Audio.load('audio/player/sonar',{
 		'Sonar_Player_01.wav',
 		'Sonar_Player_02.wav',
-		'Sonar_Player_03.wav'
-		})
+		'Sonar_Player_03.wav'})
+
+	self.lava_death_sounds = Audio.load('audio/player/death',{
+		'Player_Death_Lava.wav'})
+
+	self.zombie_death_sounds = Audio.load('audio/player/death',{
+		'Player_Death_Zombie_01.wav',
+		'Player_Death_Zombie_02.wav',
+		'Player_Death_Zombie_03.wav'})
 
 	self.l_foot_sounds = Audio.load('audio/player/footsteps',{
 		'Left_Foot_Player_Walk_01.wav',
 		'Left_Foot_Player_Walk_02.wav',
 		'Left_Foot_Player_Walk_03.wav',
 		'Left_Foot_Player_Walk_04.wav',
-		'Left_Foot_Player_Walk_05.wav'
-		})
+		'Left_Foot_Player_Walk_05.wav'})
 
 	self.r_foot_sounds = Audio.load('audio/player/footsteps',{
 		'Right_Foot_Player_Walk_01.wav',
 		'Right_Foot_Player_Walk_02.wav',
 		'Right_Foot_Player_Walk_03.wav',
 		'Right_Foot_Player_Walk_04.wav',
-		'Right_Foot_Player_Walk_05.wav'
-		})
+		'Right_Foot_Player_Walk_05.wav'})
+end
+
+function Player:spawn(x, y)
+	if not self.alive then
+		self.alive = true
+		self.body = love.physics.newBody( Physics.world, self.x, self.y, 'dynamic')
+		local shape = love.physics.newCircleShape( self.size )
+		self.fixture = love.physics.newFixture( self.body, shape, 1 )
+		self.fixture:setRestitution( 0 )
+		self.fixture:setUserData( self )
+		-- NOTE: players are in catagory 1
+		--- use setMask(1) to make objects NOT collide with the player
+		self.fixture:setCategory(1)
+		print('respawned the playe')
+	end
+
+	self:set_position(x, y)
+end
+
+function Player:set_position(x, y)
+	self.body:setPosition(x, y)
 end
 
 function Player:delete()
@@ -57,15 +85,23 @@ function Player:delete()
 	self.alive = false
 end
 
+function Player:die(killer)
+	self:delete()
+	if killer == 'lava' then
+		Audio.play_random_at(self.lava_death_sounds, self.x, self.y)
+	else -- assume killer is zombie
+		Audio.play_random_at(self.zombie_death_sounds, self.x, self.y)
+	end
+end
+
 function Player:update(dt)
 	self.sonar_timer = self.sonar_timer + dt
-
-	self.x = self.body:getX()
-	self.y = self.body:getY()
-	camera:lookAt( self.x, self.y )
-	Audio.set_listener( self.x, self.y )
-
+	
 	if self.alive then
+		self.x, self.y = self.body:getPosition()
+		camera:lookAt( self.x, self.y )
+		Audio.set_listener( self.x, self.y )
+
 		self:update_movement(dt)
 	end
 end
@@ -146,7 +182,7 @@ function Player:update_movement(dt)
 	end
 
 	if self.walk_timer > self.walk_speed then
-		Pulse(self.x, self.y, 150, 150, 0.5)
+		Pulse(self.x, self.y, 180, 150, 0.25)
 		self.walk_timer = 0
 		if self.l_foot then
 			Audio.play_random_at(self.l_foot_sounds, self.x, self.y)
@@ -157,29 +193,20 @@ function Player:update_movement(dt)
 	end
 end
 
-function Player:set_position(x, y)
-	self.body:setPosition(x, y)
-end
-
 function Player:use_sonar()
-	-- Sonar(self.x, self.y)
-	if self.sonar_timer > self.sonar_rate then
+	if self.sonar_timer > self.sonar_rate and self.alive then
 		self.sonar_timer = 0
 
 		Audio.play_random_at(self.sonar_sounds, self.x, self.y)
 
-		local inc = (math.pi*2)/300
-		local xdir, ydir, speed = 0, 1, 150
-		-- give an initial random offset
-		xdir, ydir = Vector.rotate(love.math.random(), xdir, ydir)
-		for i = 1, 300 do
-			xdir, ydir = Vector.rotate(inc, xdir, ydir)
-			Pip(self.x, self.y, xdir * speed, ydir * speed, 0)
-		end
+		local p = Pulse(self.x, self.y, 100, 200, 1.5)
+		p.color = {0, 255, 100}
 	end
 end
 
 function Player:draw()
-	love.graphics.setColor(0, 0, 0)
-	love.graphics.circle("fill", self.x, self.y, 10)
+	if self.alive then
+		love.graphics.setColor(0, 0, 0)
+		love.graphics.circle("fill", self.x, self.y, 10)
+	end
 end

@@ -6,20 +6,12 @@ Pulse = Class{
 	start_radius = 0,
 	end_radius = 10,
 	lifetime = 1,
+	color = {255,255,255},
+	name = 'pulse',
 	age = 0,
 	pips = {},
 	all = {}				-- Contains all instances of Pulse, Each subclass uses it's own table
 }
-
--- Constructor
--- function Pulse:init(x, y, start_radius, end_radius, lifetime)
--- 	self.x, self.y = x, y
--- 	self.start_radius = start_radius
--- 	self.end_radius = end_radius
--- 	self.lifetime = lifetime
-
--- 	table.insert( Pulse.all, self )
--- end
 
 function Pulse:init(x, y, speed, count, lifetime)
 	self.x, self.y = x, y
@@ -36,7 +28,7 @@ function Pulse:init(x, y, speed, count, lifetime)
 			love.physics.newCircleShape(2),
 			0.01 )
 		fixture:setRestitution(1)
-		fixture:setUserData({name='pip'}) -- 
+		fixture:setUserData(self) -- 
 		fixture:setMask(1)
 		fixture:getBody():setLinearVelocity(xdir*speed, ydir*speed)
 		xdir, ydir = Vector.rotate(incr, xdir, ydir)
@@ -45,6 +37,7 @@ function Pulse:init(x, y, speed, count, lifetime)
 	end
 
 	table.insert( Pulse.all, self )
+	return self
 end
 
 function Pulse:update(dt)
@@ -63,13 +56,12 @@ function Pulse:update(dt)
 end
 
 function Pulse:draw()
-	-- love.graphics.circle('line', self.x, self.y, self.start_radius + (self.end_radius - self.start_radius) * (self.age/self.lifetime) )
-	if self.alive then
-		love.graphics.setColor(255, 255, 255, 300*(1-(self.age / self.lifetime)) )
+	-- if self.alive then
+		love.graphics.setColor(self.color[1], self.color[2], self.color[3], 300*(1-(self.age / self.lifetime)) )
 		for i = 1, #self.pips do
 			love.graphics.points(self.pips[i]:getBody():getPosition())
 		end
-	end
+	-- end
 end
 
 function Pulse:update_all(dt)
@@ -86,16 +78,22 @@ function Pulse:update_all(dt)
 end
 
 function Pulse:draw_all()
-	-- love.graphics.setLineWidth(2)
+	love.graphics.setPointSize(3)
 	for i = 1, #self.all do
 		self.all[i]:draw()
-		-- love.graphics.setColor(255, 255, 255, 200 * (1-(self.all[i].age/self.all[i].lifetime)) + 30 )
-		-- love.graphics.circle('line', self.all[i].x, self.all[i].y, self.all[i].start_radius + (self.all[i].end_radius - self.all[i].start_radius) * (self.all[i].age/self.all[i].lifetime) + 1 )
-		-- love.graphics.circle('fill', self.all[i].x, self.all[i].y, self.all[i].start_radius + (self.all[i].end_radius - self.all[i].start_radius) * (self.all[i].age/self.all[i].lifetime) + 1 )
 	end
 end
 
 function Pulse:clear_all()
+	-- for each pulse
+	for i = 1, #self.all do
+		-- destroy each pip
+		for j = 1, #self.all[i].pips do
+			self.all[i].pips[j]:destroy()
+		end
+		-- and empty the table
+		self.all[i].pips = {}
+	end
 	self.all = {}
 end
 

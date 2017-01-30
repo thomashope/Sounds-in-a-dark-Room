@@ -9,13 +9,13 @@ end
 
 function main_menu_state:draw()
     love.graphics.setBackgroundColor(self.bg)
-    love.graphics.print("Main menu...", 20, 20)
+    love.graphics.print("Sounds in a Dark Room", 20, 20, 0, 3, 3)
 
     love.graphics.setColor(255,255,255)
     for i = 1, #self.items do
     	local string = self.items[i]
     	if i == self.index then string = "> "..string end
-    	love.graphics.print(string, 20, 50 + 20 * i)
+    	love.graphics.print(string, 20, 60 + 20 * i)
     end
 end
 

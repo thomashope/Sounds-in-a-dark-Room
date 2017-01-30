@@ -15,8 +15,9 @@ function level_select_state:init()
 	self:update_level_list()
 end
 
-function level_select_state:enter()
-	love.graphics.setBackgroundColor(self.bg)
+function level_select_state:enter(previous)
+	self:update_level_list()
+	self.index = 1
 end
 
 level_select_state['level'] = function( self, keycode, scancode, isrepeat )
@@ -39,12 +40,16 @@ level_select_state['quit to main menu'] = function( self, keycode, scancode, isr
 	end
 end
 
-local function GetFileName(url)
-  return url:match("^.+/(.+)$")
+local function GetFileNameWithoutExtension(str)
+  return str:match("(.+)%..+")
 end
 
-local function GetFileExtension(url)
-  return url:match("^.+(%..+)$")
+local function GetFileName(str)
+  return str:match("^.+/(.+)$"):match("(.+)%..+")
+end
+
+local function GetFileExtension(str)
+  return str:match("^.+(%..+)$")
 end
 
 function level_select_state:update_level_list()
@@ -59,10 +64,6 @@ function level_select_state:update_level_list()
 	end
 end
 
-function level_select_state:enter( previous )
-	self:update_level_list()
-end
-
 function level_select_state:draw()
 	love.graphics.setBackgroundColor(self.bg)
 	love.graphics.print('level select...', 20, 20)
@@ -72,7 +73,7 @@ function level_select_state:draw()
 		local item = self.items[i]
 
 		if self.items[i] == 'level' then
-			item = self.level_list[self.level_index]
+			item = GetFileNameWithoutExtension(self.level_list[self.level_index])
 		end
 
 		-- prepend > to indicate the selected item
@@ -80,6 +81,6 @@ function level_select_state:draw()
 			item = '> '..item
 		end
 
-		love.graphics.print(item, 20, 50 + 20 * i)
+		love.graphics.print(item, 20, 60 + 20 * i)
 	end
 end

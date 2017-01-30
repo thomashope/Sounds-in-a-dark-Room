@@ -46,7 +46,11 @@ end
 function Wall:draw_all()
 	love.graphics.setColor(0, 0, 0)
 	for i = 1, #self.all do
-		love.graphics.rectangle( 'fill', self.all[i].x - self.all[i].size/2, self.all[i].y - self.all[i].size/2, self.all[i].size, self.all[i].size )
+		love.graphics.rectangle( 'fill',
+			self.all[i].x - self.all[i].size/2,	-- x pos
+			self.all[i].y - self.all[i].size/2,	-- y pos
+			self.all[i].size,					-- width
+			self.all[i].size )					-- height
 	end
 end
 
@@ -71,8 +75,8 @@ function Lava:init(x, y)
 	self.x, self.y = x, y
 
 	self.body = love.physics.newBody( Physics.world, self.x, self.y, 'static' )
-	self.shape = love.physics.newRectangleShape( self.size, self.size )
-	self.fixture = love.physics.newFixture( self.body, self.shape, 1 )
+	local shape = love.physics.newRectangleShape( self.size - 10, self.size - 10 )
+	self.fixture = love.physics.newFixture( self.body, shape, 1 )
 	self.fixture:setRestitution( 0 )
 	self.fixture:setSensor( true )
 	self.fixture:setUserData( self )
@@ -83,6 +87,10 @@ end
 function Lava:draw_all()
 	for i = 1, #self.all do
 		love.graphics.setColor(200 + love.math.random(20), love.math.random(40), 0)
-		love.graphics.rectangle( 'fill', self.all[i].x - self.all[i].size/2, self.all[i].y - self.all[i].size/2, self.all[i].size, self.all[i].size )
+		love.graphics.rectangle( 'fill',
+			self.all[i].x - self.all[i].size/2,	-- x pos
+			self.all[i].y - self.all[i].size/2,	-- y pos
+			self.all[i].size,					-- width
+			self.all[i].size )					-- height
 	end
 end

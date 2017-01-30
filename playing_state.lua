@@ -1,15 +1,19 @@
 playing_state = State()
 
 function playing_state:init()
-	self.bg = {0, 0, 0}
+	self.bg = {100, 100, 100}
 	-- TODO: incorporate canvas into object
-	-- TODO: resize canvas on window resize
 	-- TODO: apply nice effects like bloom?
-	self.pips = love.graphics.newCanvas(window_width, window_heigt)
+	self.pips = love.graphics.newCanvas(window_width, window_height)
 end
 
 function playing_state:enter()
 	love.graphics.setBackgroundColor(self.bg)
+
+	-- Clear the canvas
+	love.graphics.setCanvas(self.pips)
+	love.graphics.clear(0, 0, 0, 255)
+	love.graphics.setCanvas()
 end
 
 function playing_state:update(dt)
@@ -20,6 +24,12 @@ function playing_state:update(dt)
 	Pip:update_all(dt)
 
 	player:update(dt)
+
+	if #Zombie.all == 0 then
+		Level.finish_time = love.timer.getTime()
+		Level.won = true
+		Gamestate.push(pause_menu_state)
+	end
 end
 
 function playing_state:draw()
@@ -35,7 +45,8 @@ function playing_state:draw()
 	love.graphics.setBlendMode('alpha')
     love.graphics.setCanvas(self.pips)
     love.graphics.setColor(0, 0, 0, 20)
-    love.graphics.rectangle('fill', 0, 0, window_width, window_height)
+    love.graphics.rectangle('fill', 0, 0, self.pips:getWidth(), self.pips:getHeight())
+    
     camera:attach()
 
     camera:lookAt(player.x, player.y)
@@ -61,12 +72,12 @@ function playing_state:keypressed( keycode, scancode, isrepeat )
 	if scancode == 'space' then
 		player:use_sonar()
 	elseif scancode == 'escape' then
-		Gamestate.push(pause_menu_state)
+		Gamestate.switch(pause_menu_state)
 	end
 end
 
 function playing_state:focus( f )
 	if not f then
-		Gamestate.push(pause_menu_state)
+		Gamestate.switch(pause_menu_state)
 	end
 end
