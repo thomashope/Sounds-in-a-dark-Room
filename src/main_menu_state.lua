@@ -42,6 +42,9 @@ main_menu_state['play'] = function( self, keycode, scancode, isrepeat )
 end
 
 main_menu_state['options'] = function( self, keycode, scancode, isrepeat )
+    if scancode == 'space' or scancode == 'return' then
+        Gamestate.switch(options_menu_state)
+    end
 end
 
 main_menu_state['credits'] = function( self, keycode, scancode, isrepeat )
