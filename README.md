@@ -1,6 +1,6 @@
 # Sounds-in-a-dark-Room
 
-![header gif](./sounds.gif)
+![header gif](./screenshots/sounds.gif)
 
 Coming soon to Itch.io ...
 
