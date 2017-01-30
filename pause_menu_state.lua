@@ -4,11 +4,31 @@ function pause_menu_state:init()
 	self.bg = {0, 0, 0, 100}
 	self.title = ''
 	self.items = {'restart', 'switch level', 'quit to main menu'}
+	self.lava_death_messages = {}
+	self.zombie_death_messages = {}
+	self.entry_condition = ''
+
+	for line in love.filesystem.lines("text/dead_by_zombie.txt") do
+	  table.insert(self.zombie_death_messages, line)
+	end
+
+	for line in love.filesystem.lines("text/dead_by_lava.txt") do
+	  table.insert(self.lava_death_messages, line)
+	end
 end
 
 function pause_menu_state:enter(previous, condition)
-	if condition == 'win' then
+	self.index = 1
+	self.entry_condition = condition
+
+	if Level.won then
 		self.title = 'YOU KILLED EVERYTHING\n'
+	elseif condition == 'lava' then
+		self.title = self.lava_death_messages[love.math.random(#self.lava_death_messages)]
+	elseif condition == 'zombie' then
+		self.title = self.zombie_death_messages[love.math.random(#self.zombie_death_messages)]
+	else
+		self.title = ''
 	end
 end
 
@@ -63,7 +83,7 @@ end
 function pause_menu_state:keypressed( keycode, scancode, isrepeat )
 	MenuState.keypressed( self, keycode, scancode, isrepeat )
 
-	if scancode == 'escape' then
+	if scancode == 'escape' and self.entry_condition == 'paused' then
 		Gamestate.switch(playing_state)
 	end
 end

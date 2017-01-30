@@ -38,7 +38,6 @@ end
 
 function love.update(dt)
 	Timer.update(dt)
-	Physics.update(dt)
 end
 
 function love.resize(w,h)

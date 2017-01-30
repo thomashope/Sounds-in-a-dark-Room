@@ -24,12 +24,12 @@ end
 
 local function lava_vs_player( lava, player, contact )
 	player:die('lava')
-	Gamestate.switch(pause_menu_state)
+	Gamestate.switch(pause_menu_state, 'lava')
 end
 
 local function player_vs_zombie( player, zombie, contact )
 	player:die('zombie')
-	Gamestate.switch(pause_menu_state)
+	Gamestate.switch(pause_menu_state, 'zombie')
 end
 
 local function pulse_vs_zombie( pulse, zombie, contact )

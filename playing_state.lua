@@ -17,11 +17,13 @@ function playing_state:enter()
 end
 
 function playing_state:update(dt)
+	Physics.update(dt)
+
 	Pulse:update_all(dt)
 	Sonar:update_all(dt)
 	Wall:update_all(dt)
 	Zombie:update_all(dt)
-	Pip:update_all(dt)
+	-- Pip:update_all(dt)
 
 	player:update(dt)
 
@@ -50,7 +52,7 @@ function playing_state:draw()
     camera:attach()
 
     camera:lookAt(player.x, player.y)
-	Pip:draw_all()
+	-- Pip:draw_all()
     Pulse:draw_all()
 
 	camera:detach()
@@ -72,12 +74,12 @@ function playing_state:keypressed( keycode, scancode, isrepeat )
 	if scancode == 'space' then
 		player:use_sonar()
 	elseif scancode == 'escape' then
-		Gamestate.switch(pause_menu_state)
+		Gamestate.switch(pause_menu_state, 'paused')
 	end
 end
 
 function playing_state:focus( f )
 	if not f then
-		Gamestate.switch(pause_menu_state)
+		Gamestate.switch(pause_menu_state, 'paused')
 	end
 end
