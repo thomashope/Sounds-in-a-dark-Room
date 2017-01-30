@@ -8,6 +8,11 @@ Zombie = Class{
 	name = 'zombie',
 	charging = false,
 	charge_time = 0,
+	most_recent_target = 0,	-- The spawn time of the latest thing the zombie was charging at
+	footstep_time = 0,
+	play_footstep = false,
+	left_foot = true,
+	step_time = 0,
 	charge_sounds = {},
 	l_foot_sounds = {},
 	r_foot_sounds = {},
@@ -27,7 +32,7 @@ function Zombie:init(x, y)
 	self.fixture:setRestitution( 0 )
 	self.fixture:setCategory(2)
 	self.fixture:setUserData( self )
-	self.body:setLinearDamping(0.2)
+	self.body:setLinearDamping(0.4)
 
 	self.charge_sounds = Audio.load('audio/zombie/notice',{
 		'Zombie_Notice_01.wav',
@@ -56,8 +61,9 @@ function Zombie:init(x, y)
 	table.insert( Zombie.all, self )
 end
 
-function Zombie:charge(xtarget, ytarget)
-	if not self.charging then
+function Zombie:charge(xtarget, ytarget, spawn_time)
+	if spawn_time > self.most_recent_target then
+		self.most_recent_target = spawn_time
 		self.charging = true
 		local xdir, ydir = xtarget - self.x, ytarget - self.y
 		xdir, ydir = Vector.normalize(xdir, ydir)
@@ -65,6 +71,8 @@ function Zombie:charge(xtarget, ytarget)
 		self.charge_time = 1
 
 		Audio.play_random_at(self.charge_sounds, self.x, self.y)
+
+		self.play_footstep = true
 	end
 end
 
@@ -82,10 +90,51 @@ function Zombie:update(dt)
 
 	if self.charge_time > 0 then
 		self.charge_time = self.charge_time - dt
+		self.footstep_time = self.footstep_time + dt
+
+		if self.footstep_time > 0.2 then
+			self.footstep_time = 0
+			self.play_footstep = true
+		end
+
 	elseif self.charge_time < 0 then
 		self.charge_time = 0
-		self.body:setLinearVelocity(0, 0)
+		self.body:setLinearVelocity( Vector.mul(0.2, self.body:getLinearVelocity()))
 		self.charging = false
+		self.play_footstep = true
+	end
+
+	if not self.charging then
+		self.step_time = self.step_time - dt
+
+		if self.step_time < 0 then
+			-- set a new random step time
+			self.step_time = love.math.random()*4
+
+			-- pick a random direction
+			local xdir, ydir = Vector.rotate(love.math.random()*math.pi*2, 0, 1)
+			xdir, ydir = Vector.mul(20, xdir, ydir)
+			self.body:setLinearVelocity(xdir, ydir)
+
+			self.play_footstep = true
+		end
+	end
+
+	-- play a footstep sound
+	if self.play_footstep then
+		if self.left_foot then
+			Audio.play_random_at(self.l_foot_sounds, self.x, self.y)
+		else
+			Audio.play_random_at(self.r_foot_sounds, self.x, self.y)
+		end
+
+		-- Create footstep pulse
+		local p = Pulse(self.x, self.y, 100, 16, 0.2, {1,2})
+		p.color = {255,0,0}
+		p.name = 'zombie step'
+
+		self.left_foot = not self.left_foot
+		self.play_footstep = false
 	end
 end
 

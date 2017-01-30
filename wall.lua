@@ -13,7 +13,7 @@ function Wall:init(x, y)
 	self.fixture = love.physics.newFixture( self.body, self.shape, 1 )
 	self.fixture:setRestitution( 0 )
 	self.fixture:setUserData( self )
-	self.fixture:setCategory( 2 )
+	self.fixture:setCategory( 3 )
 
 	table.insert( Wall.all, self )
 end

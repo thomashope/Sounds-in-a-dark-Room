@@ -1,7 +1,7 @@
 playing_state = State()
 
 function playing_state:init()
-	self.bg = {100, 100, 100}
+	self.bg = {0, 0, 0}
 	-- TODO: incorporate canvas into object
 	-- TODO: apply nice effects like bloom?
 	self.pips = love.graphics.newCanvas(window_width, window_height)
@@ -38,9 +38,8 @@ function playing_state:draw()
 	camera:attach()
 
     Lava:draw_all()
-    Sonar:draw_all()
+    -- Sonar:draw_all()
     Wall:draw_all()
-    Zombie:draw_all()
 
 	camera:detach()
 
@@ -64,8 +63,10 @@ function playing_state:draw()
 	love.graphics.setBlendMode('alpha')
 
 	camera:attach()
+
     camera:lookAt(player.x, player.y)
     player:draw()
+    Zombie:draw_all()
 
     camera:detach()
 end

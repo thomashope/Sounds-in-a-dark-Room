@@ -34,7 +34,7 @@ end
 
 local function pulse_vs_zombie( pulse, zombie, contact )
 	print('pulse vs zombie')
-	zombie:charge(pulse.x, pulse.y)
+	zombie:charge(pulse.x, pulse.y, pulse.spawn_time)
 end
 
 function Physics.begin_contact( a, b, contact )

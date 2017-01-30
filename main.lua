@@ -24,6 +24,7 @@ require 'wall'
 function love.load()
 	-- Application setup
 	Physics:init()
+	love.math.setRandomSeed(love.timer.getTime())
 
 	-- Set globals
 	window_width, window_height = love.graphics.getDimensions()

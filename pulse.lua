@@ -10,17 +10,20 @@ Pulse = Class{
 	name = 'pulse',
 	age = 0,
 	pips = {},
+	spawn_time = 0,
 	all = {}				-- Contains all instances of Pulse, Each subclass uses it's own table
 }
 
-function Pulse:init(x, y, speed, count, lifetime)
+function Pulse:init(x, y, speed, count, lifetime, mask)
 	self.x, self.y = x, y
 	self.pips = {}
 	self.lifetime = lifetime
+	self.spawn_time = love.timer.getTime()
 
 	local shape = love.physics.newCircleShape(2)
 	local xdir, ydir = 0, 1
 	local incr = (math.pi*2)/count
+	mask = mask or 1
 
 	for i = 1, count do
 		local fixture = love.physics.newFixture(
@@ -29,7 +32,8 @@ function Pulse:init(x, y, speed, count, lifetime)
 			0.01 )
 		fixture:setRestitution(1)
 		fixture:setUserData(self) -- 
-		fixture:setMask(1)
+		fixture:setMask(mask)
+
 		fixture:getBody():setLinearVelocity(xdir*speed, ydir*speed)
 		xdir, ydir = Vector.rotate(incr, xdir, ydir)
 

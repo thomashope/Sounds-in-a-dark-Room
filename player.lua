@@ -182,7 +182,7 @@ function Player:update_movement(dt)
 	end
 
 	if self.walk_timer > self.walk_speed then
-		Pulse(self.x, self.y, 180, 150, 0.25)
+		Pulse(self.x, self.y, 120, 60, 0.25)
 		self.walk_timer = 0
 		if self.l_foot then
 			Audio.play_random_at(self.l_foot_sounds, self.x, self.y)
