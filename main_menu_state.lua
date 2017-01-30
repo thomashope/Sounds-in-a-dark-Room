@@ -1,7 +1,19 @@
 main_menu_state = MenuState()
 
 function main_menu_state:init()
-	self.items = {'play', 'options', 'quit'}
+	self.items = {'play', 'options', 'credits', 'quit'}
+    self.credits_string =
+[[Originally created for the GGJ2017
+
+Concept/Programming: Tom
+@HopeThomasj
+
+Audio: Chris
+linkedin.com/in/christopher-quinn-sound
+
+More levels by Bogdan, Sam A. and Sam C.
+
+And thanks to Dundee Makerspace for the awesome jam site!]]
 end
 
 function main_menu_state:update(dt)
@@ -17,6 +29,10 @@ function main_menu_state:draw()
     	if i == self.index then string = "> "..string end
     	love.graphics.print(string, 20, 60 + 20 * i)
     end
+
+    if self.items[self.index] == 'credits' or self.index ==3 then
+        love.graphics.print(main_menu_state.credits_string, 20, 200)
+    end
 end
 
 main_menu_state['play'] = function( self, keycode, scancode, isrepeat )
@@ -26,6 +42,9 @@ main_menu_state['play'] = function( self, keycode, scancode, isrepeat )
 end
 
 main_menu_state['options'] = function( self, keycode, scancode, isrepeat )
+end
+
+main_menu_state['credits'] = function( self, keycode, scancode, isrepeat )
 end
 
 main_menu_state['quit'] = function( self, keycode, scancode, isrepeat )
