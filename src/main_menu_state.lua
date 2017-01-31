@@ -27,11 +27,11 @@ function main_menu_state:draw()
     for i = 1, #self.items do
     	local string = self.items[i]
     	if i == self.index then string = "> "..string end
-    	love.graphics.print(string, 20, 60 + 20 * i)
+    	love.graphics.print(string, 20, 80 + 30 * i)
     end
 
     if self.items[self.index] == 'credits' or self.index ==3 then
-        love.graphics.print(main_menu_state.credits_string, 20, 200)
+        love.graphics.print(main_menu_state.credits_string, 20, 280)
     end
 end
 

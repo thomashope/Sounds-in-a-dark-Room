@@ -69,14 +69,14 @@ function pause_menu_state:draw()
     for i = 1, #self.items do
     	local string = self.items[i]
     	if i == self.index then string = "> "..string end
-    	love.graphics.print(string, 20, 60 + 20 * i)
+    	love.graphics.print(string, 20, 80 + 30 * i)
     end
 
     -- Display time take
     if Level.won then
     	local time = string.format('Time: %.2fs', Level.finish_time - Level.start_time)
 
-    	love.graphics.print(time, 20, 150)
+    	love.graphics.print(time, 20, 220)
     end
 end
 

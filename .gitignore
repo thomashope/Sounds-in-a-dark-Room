@@ -1,3 +1,6 @@
 .DS_Store
 lib/*/docs/*
 lib/*/spec/*
+*.zip
+*.app
+*.love

@@ -81,6 +81,6 @@ function level_select_state:draw()
 			item = '> '..item
 		end
 
-		love.graphics.print(item, 20, 60 + 20 * i)
+		love.graphics.print(item, 20, 80 + 30 * i)
 	end
 end

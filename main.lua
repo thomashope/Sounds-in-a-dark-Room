@@ -25,8 +25,10 @@ require 'src.wall'
 function love.load()
 	-- Application setup
 	Physics:init()
-	love.math.setRandomSeed(love.timer.getTime())
 	love.mouse.setVisible(false)
+	love.graphics.setNewFont(18)
+	love.audio.setVolume(0.75)
+	love.math.setRandomSeed(love.timer.getTime())
 
 	-- Set globals
 	window_width, window_height = love.graphics.getDimensions()

@@ -1,12 +1,14 @@
 options_menu_state = MenuState()
 
 function options_menu_state:init()
-	self.items = {'fullscreen', 'vsync', 'back to main menu'}
+	self.items = {'volume', 'fullscreen', 'vsync', 'back to main menu'}
 	self:get_window_mode()
+	self.test_sound = love.audio.newSource('res/audio/player/sonar/Sonar_Player_01.wav', 'static')
 end
 
 function options_menu_state:enter()
 	self:get_window_mode()
+	self.index = 1
 end
 
 function options_menu_state:draw()
@@ -17,16 +19,31 @@ function options_menu_state:draw()
     for i = 1, #self.items do
     	local string = self.items[i]
 
-    	if string == 'fullscreen' then
+    	if string == 'volume' then
+    		string = string..': '..string.format('%d%%', love.audio.getVolume()*100)
+    	elseif string == 'fullscreen' then
     		if self.window_mode.fullscreen then string = string..': [ON] off' else string = string..': on [OFF]' end
 		elseif string == 'vsync' then
     		if self.window_mode.vsync then string = string..': [ON] off' else string = string..': on [OFF]' end
 		end
 
+		-- prepend a '>' to the selected item
     	if i == self.index then string = "> "..string end
 
-    	love.graphics.print(string, 20, 60 + 20 * i)
+    	love.graphics.print(string, 20, 80 + 30 * i)
     end
+end
+
+options_menu_state['volume'] = function(self, keycode, scancode, isrepeat)
+	if scancode == 'left' then
+		love.audio.setVolume( math.max(love.audio.getVolume() - 0.05, 0) )
+	elseif scancode == 'right' then
+		love.audio.setVolume( math.min(love.audio.getVolume() + 0.05, 1) )
+	end
+
+	self.test_sound:setPosition( love.audio.getPosition() )
+	self.test_sound:stop()
+	self.test_sound:play()
 end
 
 options_menu_state['fullscreen'] = function(self, keycode, scancode, isrepeat)
