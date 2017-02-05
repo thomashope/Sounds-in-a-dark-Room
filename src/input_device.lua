@@ -37,7 +37,6 @@ function InputDevice:set_input_source( src )
 			-- self.button_down_a = self.button_down_a_gamepad
 			-- self.button_down_start = self.button_down_start_gamepad
 			self:map_input_functiions('gamepad')
-			print('gamepad connected')
 		else
 			-- It's some kind of joystick, possibly weird, possibly a 'XBox 360 like' thats just not being recognised
 			-- self.axis_x = self.axis_x_joystick
@@ -45,7 +44,6 @@ function InputDevice:set_input_source( src )
 			-- self.button_down_a = self.button_down_a_joystick
 			-- self.button_down_start = self.button_down_start_joystick
 			self:map_input_functiions('joystick')
-			print('joystick connected')
 		end
 	else
 		self.device = 'keyboard'
@@ -165,8 +163,9 @@ function InputDevice:axis_y_joystick()
 end
 
 function InputDevice:button_down_a_joystick() return self.device:isDown(1) end
-function InputDevice:button_down_up_joystick() return self.device:isDown(1) end
-function InputDevice:button_down_down_joystick() return self.device:isDown(1) end
-function InputDevice:button_down_left_joystick() return self.device:isDown(1) end
-function InputDevice:button_down_right_joystick() return self.device:isDown(1) end
+function InputDevice:button_down_up_joystick() return self.device:isDown(12) end
+function InputDevice:button_down_down_joystick() return self.device:isDown(13) end
+function InputDevice:button_down_left_joystick() return self.device:isDown(14) end
+function InputDevice:button_down_right_joystick() return self.device:isDown(15) end
 function InputDevice:button_down_start_joystick() return self.device:isDown(9) end
+-- FYI: back button id is 10

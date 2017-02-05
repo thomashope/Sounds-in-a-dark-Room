@@ -21,22 +21,22 @@ function level_select_state:enter(previous)
 	self.previous = previous
 end
 
-level_select_state['level'] = function( self )
-	if controller_1:button_pressed_a() then
+level_select_state['level'] = function( self, scancode )
+	if scancode == 'space' or controller_1:button_pressed_a() then
 		-- Load the currently selected level and go to playing state
 		Level.load(self.level_list[self.level_index])
 		Gamestate.switch(playing_state)
-	elseif controller_1:button_pressed_left() then
+	elseif scancode == 'left' or controller_1:button_pressed_left() then
 		self.level_index = self.level_index - 1
 		if self.level_index < 1 then self.level_index = #self.level_list end
-	elseif controller_1:button_pressed_right() then
+	elseif scancode == 'right' or controller_1:button_pressed_right() then
 		self.level_index = self.level_index + 1
 		if self.level_index > #self.level_list then self.level_index = 1 end
 	end
 end
 
-level_select_state['return'] = function( self )
-	if controller_1:button_pressed_a() then
+level_select_state['return'] = function( self, scancode )
+	if scancode == 'space' or controller_1:button_pressed_a() then
 		Gamestate.switch(self.previous)
 	end
 end

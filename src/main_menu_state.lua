@@ -32,23 +32,23 @@ function main_menu_state:draw()
     end
 end
 
-main_menu_state['play'] = function( self )
-	if controller_1:button_pressed_a() then
+main_menu_state['play'] = function( self, scancode )
+	if scancode == 'space' or controller_1:button_pressed_a() then
 		Gamestate.switch(level_select_state)
 	end
 end
 
-main_menu_state['options'] = function( self )
-    if controller_1:button_pressed_a() then
+main_menu_state['options'] = function( self, scancode )
+    if scancode == 'space' or controller_1:button_pressed_a() then
         Gamestate.switch(options_menu_state)
     end
 end
 
-main_menu_state['credits'] = function( self )
+main_menu_state['credits'] = function( self, scancode )
 end
 
-main_menu_state['quit'] = function( self )
-	if controller_1:button_pressed_a() then
+main_menu_state['quit'] = function( self, scancode )
+	if scancode == 'space' or controller_1:button_pressed_a() then
         love.event.quit()
     end
 end

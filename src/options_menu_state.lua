@@ -34,18 +34,18 @@ function options_menu_state:draw()
     end
 end
 
-options_menu_state['volume'] = function( self )
-	if controller_1:button_pressed_left() then
+options_menu_state['volume'] = function( self, scancode )
+	if scancode == 'left' or controller_1:button_pressed_left() then
 		love.audio.setVolume( math.max(love.audio.getVolume() - 0.05, 0) )
-	elseif controller_1:button_pressed_right() then
+	elseif scancode == 'right' or controller_1:button_pressed_right() then
 		love.audio.setVolume( math.min(love.audio.getVolume() + 0.05, 1) )
 	end
 
 	Audio.play_random( player.sonar_sounds )
 end
 
-options_menu_state['fullscreen'] = function( self )
-	if controller_1:button_pressed_a() then
+options_menu_state['fullscreen'] = function( self, scancode )
+	if scancode == 'space' or controller_1:button_pressed_a() then
 		if not self.window_mode.fullscreen then
 			love.window.setMode( love.graphics.getWidth(), love.graphics.getHeight(), {fullscreen=true} )
 		else
@@ -55,8 +55,8 @@ options_menu_state['fullscreen'] = function( self )
 	end
 end
 
-options_menu_state['vsync'] = function( self )
-	if controller_1:button_pressed_a() then
+options_menu_state['vsync'] = function( self, scancode )
+	if scancode == 'space' or controller_1:button_pressed_a() then
 		if not self.window_mode.vsync then
 			love.window.setMode( love.graphics.getWidth(), love.graphics.getHeight(), {vsync=true, fullscreen=self.window_mode.fullscreen} )
 		else
@@ -66,8 +66,8 @@ options_menu_state['vsync'] = function( self )
 	end
 end
 
-options_menu_state['back to main menu'] = function( self )
-	if controller_1:button_pressed_a() then
+options_menu_state['back to main menu'] = function( self, scancode )
+	if scancode == 'space' or controller_1:button_pressed_a() then
 		Gamestate.switch(main_menu_state)
 	end
 end

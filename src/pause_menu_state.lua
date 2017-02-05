@@ -33,24 +33,24 @@ function pause_menu_state:enter(previous)
 end
 
 -- trigered when restart is highlighted
-pause_menu_state['restart'] = function( self, keycode, scancode, isrepeat )
-	if controller_1:button_pressed_a() then
+pause_menu_state['restart'] = function( self, scancode )
+	if scancode == 'space' or controller_1:button_pressed_a() then
 		Level.restart()
 		Gamestate.switch(playing_state)
 	end
 end
 
 -- triggered when switch level is highlighted
-pause_menu_state['switch level'] = function( self, keycode, scancode, isrepeat )
-	if controller_1:button_pressed_a() then
+pause_menu_state['switch level'] = function( self, scancode )
+	if scancode == 'space' or controller_1:button_pressed_a() then
 		print('switch level')
 		Gamestate.switch(level_select_state)
 	end
 end
 
 -- triggered when quit to main menu is highlighted
-pause_menu_state['quit to main menu'] = function( self, keycode, scancode, isrepeat )
-	if controller_1:button_pressed_a() then
+pause_menu_state['quit to main menu'] = function( self, scancode )
+	if scancode == 'space' or controller_1:button_pressed_a() then
 		Gamestate.switch(main_menu_state)
 	end
 end
