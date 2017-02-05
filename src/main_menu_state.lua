@@ -16,9 +16,6 @@ More levels by Bogdan, Sam A. and Sam C.
 And thanks to Dundee Makerspace for the awesome jam site!]]
 end
 
-function main_menu_state:update(dt)
-end
-
 function main_menu_state:draw()
     love.graphics.setBackgroundColor(self.bg)
     love.graphics.print("Sounds in a Dark Room", 20, 20, 0, 3, 3)
@@ -35,23 +32,23 @@ function main_menu_state:draw()
     end
 end
 
-main_menu_state['play'] = function( self, keycode, scancode, isrepeat )
-	if scancode == 'space' or scancode == 'return' then
+main_menu_state['play'] = function( self )
+	if controller_1:button_pressed_a() then
 		Gamestate.switch(level_select_state)
 	end
 end
 
-main_menu_state['options'] = function( self, keycode, scancode, isrepeat )
-    if scancode == 'space' or scancode == 'return' then
+main_menu_state['options'] = function( self )
+    if controller_1:button_pressed_a() then
         Gamestate.switch(options_menu_state)
     end
 end
 
-main_menu_state['credits'] = function( self, keycode, scancode, isrepeat )
+main_menu_state['credits'] = function( self )
 end
 
-main_menu_state['quit'] = function( self, keycode, scancode, isrepeat )
-	if scancode == 'space' or scancode == 'return' then
+main_menu_state['quit'] = function( self )
+	if controller_1:button_pressed_a() then
         love.event.quit()
     end
 end

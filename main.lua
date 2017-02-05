@@ -6,6 +6,7 @@ Class = require 'lib.hump.class'
 Vector = require 'lib.hump.vector-light'
 
 -- Load game modules
+require 'src.utils'
 require 'src.state'
 require 'src.splash_screen_state'
 require 'src.main_menu_state'
@@ -13,6 +14,8 @@ require 'src.pause_menu_state'
 require 'src.options_menu_state'
 require 'src.level_select_state'
 require 'src.playing_state'
+require 'src.console_state'
+require 'src.input_device'
 require 'src.physics'
 require 'src.level'
 require 'src.audio'
@@ -27,14 +30,16 @@ function love.load()
 	Physics:init()
 	love.mouse.setVisible(false)
 	love.graphics.setNewFont(18)
-	love.audio.setVolume(0.75)
+	love.audio.setVolume(0.5)
 	love.math.setRandomSeed(love.timer.getTime())
 
 	-- Set globals
 	window_width, window_height = love.graphics.getDimensions()
+	platform = love.system.getOS()
 
 	player = Player(0, 0)
 	camera = Camera(player.x, player.y)
+	controller_1 = InputDevice()
 
 	-- Initialise the game states
 	Gamestate.registerEvents()
@@ -43,6 +48,7 @@ end
 
 function love.update(dt)
 	Timer.update(dt)
+	controller_1:update()
 end
 
 function love.resize(w,h)
@@ -51,11 +57,22 @@ function love.resize(w,h)
 	playing_state.pips = love.graphics.newCanvas(w, h)
 end
 
+function love.keypressed( keycode, scancode, isrepeat )
+	-- Open up the console from any state
+	if scancode == 'f1' then
+		if Gamestate.current() == console_state then
+			Gamestate.switch(console_state.previous)
+		else
+			Gamestate.switch(console_state)
+		end
+	end
+end
+
 function love.joystickadded( joystick )
-	player.input = joystick
+	controller_1:set_input_source( joystick )
 	joystick:setVibration(0.5, 0.5, 0.2)
 end
 
 function love.joystickremoved()
-	player.input = 'keyboard'
+	controller_1:set_input_source()
 end

@@ -24,16 +24,17 @@ end
 
 local function lava_vs_player( lava, player, contact )
 	player:die('lava')
-	Gamestate.switch(pause_menu_state, 'lava')
+	Level.killed_by = 'lava'
+	Gamestate.switch(pause_menu_state)
 end
 
 local function player_vs_zombie( player, zombie, contact )
 	player:die('zombie')
-	Gamestate.switch(pause_menu_state, 'zombie')
+	Level.killed_by = 'zombie'
+	Gamestate.switch(pause_menu_state)
 end
 
 local function pulse_vs_zombie( pulse, zombie, contact )
-	print('pulse vs zombie')
 	zombie:charge(pulse.x, pulse.y, pulse.spawn_time)
 end
 

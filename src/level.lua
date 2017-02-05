@@ -2,7 +2,8 @@ Level = {
 	loaded = '',
 	start_time = 0,
 	finish_time = 0,
-	won = false
+	won = false,
+	killed_by = ''
 }
 
 function Level.load(filename)
@@ -38,6 +39,7 @@ function Level.load(filename)
 
 	Level.loaded = filename
 	Level.won = false
+	Level.killed_by = ''
 	Level.start_time = love.timer.getTime()
 end
 

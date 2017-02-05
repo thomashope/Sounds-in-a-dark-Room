@@ -3,7 +3,6 @@
 Player = Class{
 	__includes = Entity,
 	speed = 100,
-	input = 'keyboard',
 	l_foot = true,
 	sonar_timer = 0,			-- time since last pulse
 	sonar_rate = 0.1,			-- min time between pulses
@@ -107,73 +106,13 @@ function Player:update(dt)
 end
 
 function Player:update_movement(dt)
-	local x_axis, y_axis = 0, 0
+	local axis_x, axis_y = 0, 0
 
-	-- if self.input == 'keyboard' then
-	if love.keyboard.isScancodeDown('up') then
-		y_axis = -1
-	elseif love.keyboard.isScancodeDown('down') then
-		y_axis = 1
-	end
+	axis_x = controller_1:axis_x()
+	axis_y = controller_1:axis_y()
 
-	if love.keyboard.isScancodeDown('left') then
-		x_axis = -1
-	elseif love.keyboard.isScancodeDown('right') then
-		x_axis = 1
-	end
-
-	if self.input ~= 'keyboard' then
-		if self.input:isGamepad() then
-
-			-- TODO: test this!!!
-
-			if self.input:isGamepadDown('dpup') then
-				y_axis = -1
-			elseif self.input:isGamepadDown('dpup') then
-				y_axis = 1
-			end
-
-			if self.input:isGamepadDown('dpleft') then
-				x_axis = -1
-			elseif self.input:isGamepadDown('dpright') then
-				x_axis = 1
-			end
-
-			-- get input from the left stick
-			if math.abs(self.input:getGamepadAxis('leftx')) > 0.2 then
-				x_axis = self.input:getGamepadAxis('leftx')
-			end
-			if math.abs(self.input:getGamepadAxis('lefty')) > 0.2 then
-				y_axis = self.input:getGamepadAxis('lefty')
-			end
-
-		else -- assume the input is either a joyostick or gamepad
-
-			-- get input from the joystick 'dpad', here we assume the joystick is actually just an unrecognised gamepad
-			if self.input:isDown(12) then
-				y_axis = -1
-			elseif self.input:isDown(13) then
-				y_axis = 1
-			end
-
-			if self.input:isDown(14) then
-				x_axis = -1
-			elseif self.input:isDown(15) then
-				x_axis = 1
-			end
-
-			-- get input from what we assume is the left stick
-			if math.abs(self.input:getAxis(1)) > 0.2 then
-				x_axis = self.input:getAxis(1)
-			end
-			if math.abs(self.input:getAxis(2)) > 0.2 then
-				y_axis = self.input:getAxis(2)
-			end
-		end
-	end
-
-	if x_axis ~= 0 or y_axis ~= 0 then
-		self.body:setLinearVelocity( self.speed * x_axis, self.speed * y_axis )
+	if axis_x ~= 0 or axis_y ~= 0 then
+		self.body:setLinearVelocity( self.speed * axis_x, self.speed * axis_y )
 
 		self.walk_timer = self.walk_timer + dt
 	else

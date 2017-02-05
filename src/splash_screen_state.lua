@@ -7,10 +7,10 @@ end
 
 function splash_screen_state:enter()
 	Timer.tween(1.5, self.bg, {0,0,0}, 'in-out-quad')
-	Timer.after(3, function() splash_screen_state:switch() end)
+	Timer.after(3, function() splash_screen_state:finish() end)
 end
 
-function splash_screen_state:switch()
+function splash_screen_state:finish()
 	if not self.done then
 		self.done = true
 		Gamestate.switch(main_menu_state)
@@ -18,6 +18,9 @@ function splash_screen_state:switch()
 end
 
 function splash_screen_state:update(dt)
+	if controller_1:button_pressed_any() then
+		self:finish()
+	end
 end
 
 function splash_screen_state:draw()
@@ -28,7 +31,5 @@ function splash_screen_state:draw()
 end
 
 function splash_screen_state:keypressed( keycode, scancode, isrepeat )
-	if scancode == 'space' then
-		self:switch()
-	end
+	self:finish()
 end

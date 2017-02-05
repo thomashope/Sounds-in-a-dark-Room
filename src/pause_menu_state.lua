@@ -17,15 +17,15 @@ function pause_menu_state:init()
 	end
 end
 
-function pause_menu_state:enter(previous, condition)
+function pause_menu_state:enter(previous)
 	self.index = 1
 	self.entry_condition = condition
 
 	if Level.won then
 		self.title = 'YOU KILLED EVERYTHING\n'
-	elseif condition == 'lava' then
+	elseif Level.killed_by == 'lava' then
 		self.title = self.lava_death_messages[love.math.random(#self.lava_death_messages)]
-	elseif condition == 'zombie' then
+	elseif Level.killed_by == 'zombie' then
 		self.title = self.zombie_death_messages[love.math.random(#self.zombie_death_messages)]
 	else
 		self.title = ''
@@ -34,7 +34,7 @@ end
 
 -- trigered when restart is highlighted
 pause_menu_state['restart'] = function( self, keycode, scancode, isrepeat )
-	if scancode == 'space' or scancode == 'return' then
+	if controller_1:button_pressed_a() then
 		Level.restart()
 		Gamestate.switch(playing_state)
 	end
@@ -42,7 +42,7 @@ end
 
 -- triggered when switch level is highlighted
 pause_menu_state['switch level'] = function( self, keycode, scancode, isrepeat )
-	if scancode == 'space' or scancode == 'return' then
+	if controller_1:button_pressed_a() then
 		print('switch level')
 		Gamestate.switch(level_select_state)
 	end
@@ -50,9 +50,17 @@ end
 
 -- triggered when quit to main menu is highlighted
 pause_menu_state['quit to main menu'] = function( self, keycode, scancode, isrepeat )
-	if scancode == 'space' or scancode == 'return' then
+	if controller_1:button_pressed_a() then
 		Gamestate.switch(main_menu_state)
 	end
+end
+
+function pause_menu_state:update(dt)
+	if controller_1:button_pressed_start() and self.entry_condition == 'paused' then
+		Gamestate.switch(playing_state)
+	end
+
+	self:navigate_menu()
 end
 
 function pause_menu_state:draw()

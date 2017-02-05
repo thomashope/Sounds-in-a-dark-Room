@@ -1,5 +1,5 @@
 State = Class{
-	bg = {0, 0, 0},
+	bg = {0, 0, 0}
 }
 
 MenuState = Class{
@@ -12,19 +12,40 @@ function MenuState:enter()
 	self.index = 1
 end
 
+function MenuState:call_selected_item()
+	self[self.items[self.index]]( self )
+end
+
+function MenuState:update()
+	self:navigate_menu()
+end
+
+function MenuState:navigate_menu()
+	if controller_1:button_pressed_up() then
+		self.index = self.index - 1
+	elseif controller_1:button_pressed_down() then
+		self.index = self.index + 1
+	end
+	-- Keep the  index in the range of the menu
+	self.index = math.wrap( self.index, 1, #self.items )
+
+	if controller_1:button_pressed_any() then
+		self:call_selected_item()
+	end
+end
+
 function MenuState:keypressed( keycode, scancode, isrepeat )
 	if scancode == "up" then
 
 		self.index = self.index - 1
-		if self.index < 1 then self.index = #self.items end
 
 	elseif scancode == "down" then
 
 		self.index = self.index + 1
-		if self.index > #self.items then self.index = 1 end
 
 	else
-		-- call the function that is the name of the selected item
-		self[self.items[self.index]]( self, keycode, scancode, isrepeat )
+		self:call_selected_item( keycode, scancode, isrepeat )
 	end
+
+	self.index = math.wrap( self.index, 1, #self.items )
 end

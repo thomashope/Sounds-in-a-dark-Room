@@ -10,7 +10,7 @@ level_select_state = MenuState()
 function level_select_state:init()
 	self.level_list = {}
 	self.level_index = 1
-	self.items = {'level', 'quit to main menu'}
+	self.items = {'level', 'return'}
 
 	self:update_level_list()
 end
@@ -18,25 +18,26 @@ end
 function level_select_state:enter(previous)
 	self:update_level_list()
 	self.index = 1
+	self.previous = previous
 end
 
-level_select_state['level'] = function( self, keycode, scancode, isrepeat )
-	if scancode == 'space' or scancode == 'return' then
+level_select_state['level'] = function( self )
+	if controller_1:button_pressed_a() then
 		-- Load the currently selected level and go to playing state
 		Level.load(self.level_list[self.level_index])
 		Gamestate.switch(playing_state)
-	elseif scancode == 'left' then
+	elseif controller_1:button_pressed_left() then
 		self.level_index = self.level_index - 1
 		if self.level_index < 1 then self.level_index = #self.level_list end
-	elseif scancode == 'right' then
+	elseif controller_1:button_pressed_right() then
 		self.level_index = self.level_index + 1
 		if self.level_index > #self.level_list then self.level_index = 1 end
 	end
 end
 
-level_select_state['quit to main menu'] = function( self, keycode, scancode, isrepeat )
-	if scancode == 'space' or scancode == 'return' then
-		Gamestate.switch(main_menu_state)
+level_select_state['return'] = function( self )
+	if controller_1:button_pressed_a() then
+		Gamestate.switch(self.previous)
 	end
 end
 
@@ -72,8 +73,19 @@ function level_select_state:draw()
 	for i = 1, #self.items do
 		local item = self.items[i]
 
-		if self.items[i] == 'level' then
+		if item == 'level' then
 			item = GetFileNameWithoutExtension(self.level_list[self.level_index])
+		end
+
+		-- Indicate where we will be returning to
+		if item == 'return' then
+			if self.previous == main_menu_state then
+				item = item..' to main menu'
+			elseif self.previous == playing_state then
+				item = item..' to game'
+			elseif self.previous == pause_menu_state then
+				item = item..' to pause menu'
+			end
 		end
 
 		-- prepend > to indicate the selected item

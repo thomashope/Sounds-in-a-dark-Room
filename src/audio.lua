@@ -15,6 +15,7 @@ end
 function Audio.play_random( list )
 	local i = love.math.random(#list)
 	list[i]:stop()
+	list[i]:setPosition( love.audio.getPosition() )
 	list[i]:play()
 end
 

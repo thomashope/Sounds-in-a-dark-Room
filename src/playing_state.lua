@@ -17,6 +17,12 @@ function playing_state:enter()
 end
 
 function playing_state:update(dt)
+	if controller_1.device ~= 'keyboard' and controller_1:button_pressed_start() then
+		Gamestate.switch(pause_menu_state)
+	elseif controller_1:button_pressed_a() then
+		player:use_sonar()
+	end
+
 	Physics.update(dt)
 
 	Pulse:update_all(dt)
@@ -35,20 +41,20 @@ end
 function playing_state:draw()
 	camera:attach()
 
-    Lava:draw_all()
-    Wall:draw_all()
+	Lava:draw_all()
+	Wall:draw_all()
 
 	camera:detach()
 
 	love.graphics.setBlendMode('alpha')
-    love.graphics.setCanvas(self.pips)
-    love.graphics.setColor(0, 0, 0, 20)
-    love.graphics.rectangle('fill', 0, 0, self.pips:getWidth(), self.pips:getHeight())
-    
-    camera:attach()
+	love.graphics.setCanvas(self.pips)
+	love.graphics.setColor(0, 0, 0, 20)
+	love.graphics.rectangle('fill', 0, 0, self.pips:getWidth(), self.pips:getHeight())
 
-    camera:lookAt(player.x, player.y)
-    Pulse:draw_all()
+	camera:attach()
+
+	camera:lookAt(player.x, player.y)
+	Pulse:draw_all()
 
 	camera:detach()
 
@@ -60,23 +66,21 @@ function playing_state:draw()
 
 	camera:attach()
 
-    camera:lookAt(player.x, player.y)
-    player:draw()
-    Zombie:draw_all()
+	camera:lookAt(player.x, player.y)
+	player:draw()
+	Zombie:draw_all()
 
-    camera:detach()
+	camera:detach()
 end
 
 function playing_state:keypressed( keycode, scancode, isrepeat )
-	if scancode == 'space' then
-		player:use_sonar()
-	elseif scancode == 'escape' then
-		Gamestate.switch(pause_menu_state, 'paused')
+	if scancode == 'escape' then
+		Gamestate.switch(pause_menu_state)
 	end
 end
 
 function playing_state:focus( f )
 	if not f then
-		Gamestate.switch(pause_menu_state, 'paused')
+		Gamestate.switch(pause_menu_state)
 	end
 end
