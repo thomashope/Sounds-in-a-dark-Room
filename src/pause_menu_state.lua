@@ -43,7 +43,6 @@ end
 -- triggered when switch level is highlighted
 pause_menu_state['switch level'] = function( self, scancode )
 	if scancode == 'space' or controller_1:button_pressed_a() then
-		print('switch level')
 		Gamestate.switch(level_select_state)
 	end
 end
