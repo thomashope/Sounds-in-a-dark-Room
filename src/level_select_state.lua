@@ -67,6 +67,7 @@ end
 
 function level_select_state:draw()
 	love.graphics.setBackgroundColor(self.bg)
+	love.graphics.setColor(255,255,255)
 	love.graphics.print('level select...', 20, 20)
 
 	-- Iterate over the list of menu items

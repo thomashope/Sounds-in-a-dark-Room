@@ -18,7 +18,8 @@ function splash_screen_state:finish()
 end
 
 function splash_screen_state:update(dt)
-	if controller_1:button_pressed_any() then
+	if controller_1:button_pressed_any() or
+		(controller_1.device ~= 'keyboard' and controller_1:button_down_a_keyboard()) then
 		self:finish()
 	end
 end
@@ -28,8 +29,4 @@ function splash_screen_state:draw()
 
 	love.graphics.setColor(255, 255, 255)
 	love.graphics.printf("Sounds in a Dark Room", 0, window_height/3, window_width/4, "center", 0, 4)
-end
-
-function splash_screen_state:keypressed( keycode, scancode, isrepeat )
-	self:finish()
 end

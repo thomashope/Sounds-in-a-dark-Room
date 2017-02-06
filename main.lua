@@ -13,6 +13,7 @@ require 'src.main_menu_state'
 require 'src.pause_menu_state'
 require 'src.options_menu_state'
 require 'src.level_select_state'
+require 'src.credits_screen_state'
 require 'src.playing_state'
 require 'src.console_state'
 require 'src.input_device'
@@ -24,6 +25,12 @@ require 'src.pulse'
 require 'src.player'
 require 'src.zombie'
 require 'src.wall'
+
+-- TODO: improve the Timer.tween functions by
+--	When additional arguments are given they are passed as arguments
+--  to the 'after' function (they are currently passed to the tweening funciton)
+--  replace the tweening function string with a string or table value to pass
+--	additional arguments when required 
 
 function love.load()
 	-- Application setup

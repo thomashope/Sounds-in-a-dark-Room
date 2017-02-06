@@ -139,7 +139,7 @@ function Player:use_sonar()
 		Audio.play_random_at(self.sonar_sounds, self.x, self.y)
 
 		local p = Pulse(self.x, self.y, 100, 200, 1.5)
-		p.color = {0, 255, 100}
+		p.color = {100,100,255}
 	end
 end
 
