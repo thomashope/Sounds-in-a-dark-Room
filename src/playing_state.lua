@@ -1,10 +1,29 @@
 playing_state = State()
 
+-- TODO: make not incredibly shitty blur shader!!
+--	See github/vrld/shine for examples of working blur shaders
+-- TODO: fix smudging effect on screen...
+
 function playing_state:init()
 	self.bg = {0, 0, 0}
 	-- TODO: incorporate canvas into object
 	-- TODO: apply nice effects like bloom?
 	self.pips = love.graphics.newCanvas(window_width, window_height)
+
+
+    local pixelcode = [[
+        vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords )
+        {
+            vec4 texcolor = Texel(texture, texture_coords);
+            texcolor += Texel(texture, texture_coords + vec2(0.002, 0));
+            texcolor += Texel(texture, texture_coords + vec2(-0.002, 0));
+            texcolor += Texel(texture, texture_coords + vec2(0, -0.002));
+            texcolor += Texel(texture, texture_coords + vec2(0, 0.002));
+            texcolor *= 0.2;
+            return texcolor * color;
+        }
+    ]]
+	self.blur_shader = love.graphics.newShader( pixelcode )
 end
 
 function playing_state:enter()
@@ -61,8 +80,10 @@ function playing_state:draw()
 	love.graphics.setCanvas()
 	love.graphics.setBlendMode('add')
 	love.graphics.setColor(255, 255, 255)
+	love.graphics.setShader(self.blur_shader)
 	love.graphics.draw(self.pips, 0, 0)
 	love.graphics.setBlendMode('alpha')
+	love.graphics.setShader()
 
 	camera:attach()
 

@@ -26,11 +26,15 @@ require 'src.player'
 require 'src.zombie'
 require 'src.wall'
 
--- TODO: improve the Timer.tween functions by
---	When additional arguments are given they are passed as arguments
---  to the 'after' function (they are currently passed to the tweening funciton)
---  replace the tweening function string with a string or table value to pass
---	additional arguments when required 
+--[[
+- TODO: improve the Timer.tween functions...
+	When additional arguments are given they are passed as arguments
+	to the 'after' function (they are currently passed to the tweening funciton)
+	replace the tweening function string with a string or table value to pass
+	additional arguments when required 
+- TODO: scale menus for fullscreen
+- TODO: prompt user when trying to use keyboard while controller is connected
+--]]
 
 function love.load()
 	-- Application setup
