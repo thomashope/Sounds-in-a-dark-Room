@@ -44,7 +44,6 @@ function Level.load(filename)
 end
 
 function Level.restart()
-	Level.clear()
 	Level.load(Level.loaded)
 end
 
@@ -53,4 +52,13 @@ function Level.clear()
 	Pulse:clear_all()
 	Wall:clear_all()
 	Lava:clear_all()
+
+
+	-- local bodies = Physics.world:getBodyList()
+	-- for i = 1, #bodies do
+	-- 	-- if bodies[i]:getUserData() == 'pulse' then
+	-- 	if not bodies[i]:isDestroyed() and bodies[i]:getUserData().name ~= 'player' then
+	-- 		bodies[i]:destroy()
+	-- 	end
+	-- end
 end

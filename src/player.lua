@@ -10,6 +10,9 @@ Player = Class{
 	walk_speed = 1/2.5,		-- steps per second
 	size = 10,
 	name = 'player',
+	sonar_list = {},
+	sonar_index = 1,
+	sonar_list_max = 5,
 	sonar_sounds = {},
 	lava_death_sounds = {},
 	zombie_death_sounds = {},
@@ -29,6 +32,13 @@ function Player:init(x, y)
 	-- NOTE: players are in catagory 1
 	--- use setMask(1) to make objects NOT collide with the player
 	self.fixture:setCategory(1)
+
+	-- Preallocate all the sonar objects
+	for i = 1, self.sonar_list_max do
+		table.insert( self.sonar_list, Pulse(self.x, self.y, 100, 200, 1.5, 1, true) )
+		self.sonar_list[i].color = {100,100,255}
+		self.sonar_list[i]:destroy()
+	end
 
 	self.sonar_sounds = Audio.load('audio/player/sonar',{
 		'Sonar_Player_01.wav',
@@ -138,8 +148,10 @@ function Player:use_sonar()
 
 		Audio.play_random_at(self.sonar_sounds, self.x, self.y)
 
-		local p = Pulse(self.x, self.y, 100, 200, 1.5)
-		p.color = {100,100,255}
+		self.sonar_list[self.sonar_index]:destroy()
+		self.sonar_list[self.sonar_index]:re_init(self.x, self.y, 100, 1.5)
+		print('re init', self.sonar_index)
+		self.sonar_index = math.wrap(self.sonar_index+1, 1, self.sonar_list_max)
 	end
 end
 
