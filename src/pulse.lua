@@ -27,7 +27,7 @@ function Pulse:init(x, y, speed, count, lifetime, mask, preallocated)
 	self.spawn_time = love.timer.getTime()
 
 	local shape = love.physics.newCircleShape(2)
-	local xdir, ydir = 0, 1
+	local xdir, ydir = Vector.rotate(love.math.random(), 0, 1)
 	local incr = (math.pi*2)/count
 	local mask = mask or 1
 
@@ -73,7 +73,7 @@ function Pulse:re_init(x, y, speed, lifetime, mask)
 	self.alive = true
 
 	local shape = love.physics.newCircleShape(2)
-	local xdir, ydir = 0, 1
+	local xdir, ydir = Vector.rotate(love.math.random(), 0, 1)
 	local incr = (math.pi*2)/#self.pips
 	local mask = mask or 1
 
