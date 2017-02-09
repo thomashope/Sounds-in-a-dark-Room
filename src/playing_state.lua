@@ -10,7 +10,6 @@ function playing_state:init()
 	-- TODO: apply nice effects like bloom?
 	self.pips = love.graphics.newCanvas(window_width, window_height)
 
-
     local pixelcode = [[
         vec4 effect( vec4 color, Image texture, vec2 texture_coords, vec2 screen_coords )
         {
@@ -20,7 +19,7 @@ function playing_state:init()
             texcolor += Texel(texture, texture_coords + vec2(0, -0.002));
             texcolor += Texel(texture, texture_coords + vec2(0, 0.002));
             texcolor *= 0.2;
-            return texcolor * color;
+            return texcolor * color * vec4(1,1,1,0.9);
         }
     ]]
 	self.blur_shader = love.graphics.newShader( pixelcode )
@@ -37,7 +36,7 @@ end
 
 function playing_state:update(dt)
 	if controller_1.device ~= 'keyboard' and controller_1:button_pressed_start() then
-		Gamestate.switch(pause_menu_state)
+		Gamestate.switch(pause_menu_state, 'paused')
 	elseif controller_1:button_pressed_a() then
 		player:use_sonar()
 	end
@@ -65,15 +64,18 @@ function playing_state:draw()
 
 	camera:detach()
 
+
 	love.graphics.setBlendMode('alpha')
 	love.graphics.setCanvas(self.pips)
-	love.graphics.setColor(0, 0, 0, 20)
+	love.graphics.setColor(0.1, 0.1, 0.1, 20)
 	love.graphics.rectangle('fill', 0, 0, self.pips:getWidth(), self.pips:getHeight())
 
 	camera:attach()
 
 	camera:lookAt(player.x, player.y)
 	Pulse:draw_all()
+
+	-- love.graphics.setCanvas()
 
 	camera:detach()
 
@@ -96,7 +98,16 @@ end
 
 function playing_state:keypressed( keycode, scancode, isrepeat )
 	if scancode == 'escape' then
-		Gamestate.switch(pause_menu_state)
+		Gamestate.switch(pause_menu_state, 'paused')
+	end
+
+	if controller_1.device ~= 'keyboard' and (
+		scancode == 'left' or
+		scancode == 'right' or
+		scancode == 'up' or
+		scancode == 'down' or
+		scancode == 'space') then
+			Gamestate.push(controller_prompt_state)
 	end
 end
 

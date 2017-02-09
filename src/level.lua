@@ -43,6 +43,11 @@ function Level.load(filename)
 	Level.start_time = love.timer.getTime()
 end
 
+-- Returns true when the level has finished for some reason (won or died)
+function Level.finished()
+	return Level.killed_by ~= '' or Level.won
+end
+
 function Level.restart()
 	Level.load(Level.loaded)
 end

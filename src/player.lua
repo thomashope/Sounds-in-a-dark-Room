@@ -13,6 +13,8 @@ Player = Class{
 	sonar_list = {},
 	sonar_index = 1,
 	sonar_list_max = 9,
+	sonar_speed = 100,
+	sonar_lifetime = 1.5,
 	sonar_sounds = {},
 	lava_death_sounds = {},
 	zombie_death_sounds = {},
@@ -35,8 +37,8 @@ function Player:init(x, y)
 
 	-- Preallocate all the sonar objects
 	for i = 1, self.sonar_list_max do
-		table.insert( self.sonar_list, Pulse(self.x, self.y, 100, 200, 1.5, 1, true) )
-		self.sonar_list[i].color = {100,100,255}
+		table.insert( self.sonar_list, Pulse(self.x, self.y, self.sonar_speed, 200, self.sonar_lifetime, 1, true) )
+		self.sonar_list[i].color = {80,60,255}
 		self.sonar_list[i]:destroy()
 	end
 
@@ -149,8 +151,7 @@ function Player:use_sonar()
 		Audio.play_random_at(self.sonar_sounds, self.x, self.y)
 
 		self.sonar_list[self.sonar_index]:destroy()
-		self.sonar_list[self.sonar_index]:re_init(self.x, self.y, 100, 1.5)
-		print('re init', self.sonar_index)
+		self.sonar_list[self.sonar_index]:re_init(self.x, self.y, self.sonar_speed, self.sonar_lifetime)
 		self.sonar_index = math.wrap(self.sonar_index+1, 1, self.sonar_list_max)
 	end
 end

@@ -165,25 +165,6 @@ function Pulse:draw_all()
 end
 
 function Pulse:clear_all()
-	-- -- for each pulse
-	-- for i = 1, #self.immidiate_instances do
-	-- 	-- destroy each pip
-	-- 	for j = 1, #self.immidiate_instances[i].pips do
-	-- 		self.immidiate_instances[i].pips[j]:destroy()
-	-- 	end
-	-- 	-- and empty the pips table
-	-- 	self.immidiate_instances[i].pips = {}
-	-- end
-	-- -- finally empty the instances table
-	-- self.immidiate_instances = {}
-
-	-- -- Note that for the preallocated table we are leaving the table intact
-	-- -- We are just destroying the pip fixtures
-	-- for i = 1, #self.preallocated_instances do
-	-- 	if self.preallocated_instances[i].alive then
-	-- 		self.preallocated_instances[i]:destroy_fixtures()
-	-- 	end
-	-- end
 
 	local bodies = Physics.world:getBodyList()
 	local fixtures = {}
