@@ -47,6 +47,10 @@ function Player:init(x, y)
 		'Sonar_Player_02.wav',
 		'Sonar_Player_03.wav'})
 
+	for i = 1, #self.sonar_sounds do
+		self.sonar_sounds[i]:setVolume(0.7)
+	end
+
 	self.lava_death_sounds = Audio.load('audio/player/death',{
 		'Player_Death_Lava.wav'})
 
@@ -62,12 +66,20 @@ function Player:init(x, y)
 		'Left_Foot_Player_Walk_04.wav',
 		'Left_Foot_Player_Walk_05.wav'})
 
+	for i = 1, #self.l_foot_sounds do
+		self.l_foot_sounds[i]:setVolume(0.7)
+	end
+
 	self.r_foot_sounds = Audio.load('audio/player/footsteps',{
 		'Right_Foot_Player_Walk_01.wav',
 		'Right_Foot_Player_Walk_02.wav',
 		'Right_Foot_Player_Walk_03.wav',
 		'Right_Foot_Player_Walk_04.wav',
 		'Right_Foot_Player_Walk_05.wav'})
+
+	for i = 1, #self.r_foot_sounds do
+		self.r_foot_sounds[i]:setVolume(0.7)
+	end
 end
 
 function Player:spawn(x, y)
@@ -111,10 +123,16 @@ function Player:update(dt)
 	if self.alive then
 		self.x, self.y = self.body:getPosition()
 		camera:lookAt( self.x, self.y )
+		
 		Audio.set_listener( self.x, self.y )
+
+		for i = 1, #self.sonar_sounds do
+			self.sonar_sounds[i]:setPosition(self.x * Audio.scale, self.y * Audio.scale, 0)
+		end
 
 		self:update_movement(dt)
 	end
+
 end
 
 function Player:update_movement(dt)
@@ -148,7 +166,7 @@ function Player:use_sonar()
 	if self.sonar_timer > self.sonar_rate and self.alive then
 		self.sonar_timer = 0
 
-		Audio.play_random_at(self.sonar_sounds, self.x, self.y)
+		Audio.play_random(self.sonar_sounds)
 
 		self.sonar_list[self.sonar_index]:destroy()
 		self.sonar_list[self.sonar_index]:re_init(self.x, self.y, self.sonar_speed, self.sonar_lifetime)
