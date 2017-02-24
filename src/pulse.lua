@@ -60,6 +60,7 @@ function Pulse:destroy()
 		self.alive = false
 		if not self.pips[i]:isDestroyed() then
 			self.pips[i]:getBody():destroy();
+			--self.pips[i]:destroy()
 		end
 	end
 end
@@ -92,23 +93,10 @@ end
 function Pulse:update(dt)
 
 	if self.alive then
-	
 		self.age = self.age + dt
 	
 		if self.age > self.lifetime then
 			self.alive = false
-
-			-- Remove all the pips
-			for i = 1, #self.pips do
-				self.pips[i]:destroy()
-			end
-
-			-- As long as the pulse is not preallocated, clear all the pips
-			if not self.preallocated then
-				self.pips = {}
-			else
-				self:destroy()
-			end
 		end
 	end
 end
@@ -131,6 +119,7 @@ function Pulse:update_all(dt)
 			self.immidiate_instances[i]:update(dt)
 			i = i + 1
 		else
+			self.immidiate_instances[i]:destroy()
 			table.remove( self.immidiate_instances, i )
 		end
 	end

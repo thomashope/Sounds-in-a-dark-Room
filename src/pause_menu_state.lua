@@ -11,7 +11,7 @@ function pause_menu_state:init()
 	-- Juice for time variable
 	self.time_colour = {100,100,255}
 	self.time_timer = nil
-	pause_menu_state.cycle_timer_colour()
+	--pause_menu_state.cycle_timer_colour()
  
 	for line in love.filesystem.lines("res/text/killed_by_zombie.txt") do
 	  table.insert(self.zombie_death_messages, line)

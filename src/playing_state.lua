@@ -113,6 +113,6 @@ end
 
 function playing_state:focus( f )
 	if not f then
-		Gamestate.switch(pause_menu_state)
+		Gamestate.switch(pause_menu_state, 'paused')
 	end
 end

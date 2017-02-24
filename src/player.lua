@@ -93,7 +93,6 @@ function Player:spawn(x, y)
 		-- NOTE: players are in catagory 1
 		--- use setMask(1) to make objects NOT collide with the player
 		self.fixture:setCategory(1)
-		print('respawned the playe')
 	end
 
 	self:set_position(x, y)
@@ -163,6 +162,8 @@ function Player:update_movement(dt)
 end
 
 function Player:use_sonar()
+	print("Box2d: "..Physics.world:getBodyCount())
+	
 	if self.sonar_timer > self.sonar_rate and self.alive then
 		self.sonar_timer = 0
 

@@ -9,6 +9,16 @@ Level = {
 function Level.load(filename)
 	Level.clear()
 
+	Physics.destroy_all_with_name('pulse')
+
+	-- Print a bunch of debug stuff to try to find the memory leak
+	print('--- restarted level ---')
+	print("Player pulse caches: "..#Player.sonar_list)
+	print("Player pulse cache size: "..#Player.sonar_list[1])
+	print("Immidiate pulses: "..#Pulse.immidiate_instances)
+	print("Preallocated pulses: "..#Pulse.preallocated_instances)
+	print("Box2d: "..Physics.world:getBodyCount())
+
 	local scale = Wall.size
 	local image = love.image.newImageData("res/levels/"..filename)
 

@@ -4,6 +4,7 @@ Camera = require 'lib.hump.camera'
 Timer = require 'lib.hump.timer'
 Class = require 'lib.hump.class'
 Vector = require 'lib.hump.vector-light'
+--Lovebird = require 'lib.lovebird.lovebird'
 
 -- Load game modules
 require 'src.utils'
@@ -61,6 +62,7 @@ end
 function love.update(dt)
 	Timer.update(dt)
 	controller_1:update()
+	--Lovebird.update()
 end
 
 function love.resize(w,h)

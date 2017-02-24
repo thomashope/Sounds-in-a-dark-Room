@@ -10,12 +10,23 @@ function Physics.init()
 	Physics.world:setCallbacks(
 		Physics.begin_contact,
 		Physics.end_contact,
-		Physics.pre_solvem,
+		Physics.pre_solve,
 		Physics.post_solve)
 end
 
 function Physics.update(dt)
 	Physics.world:update(dt)
+end
+
+function Physics.destroy_all_with_name(name)
+	local bodies = Physics.world:getBodyList()
+	for i = 1, #bodies do
+		local user_data = bodies[i]:getUserData()
+		-- Check the body has user data with the given name
+		if user_data and user_data.name and user_data.name == name then
+			if not bodies[i]:isDestroyed() then bodies[i]:destroy() end
+		end
+	end
 end
 
 local function lava_vs_zombie( lava, zombie, contact )

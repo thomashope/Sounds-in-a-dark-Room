@@ -17,7 +17,7 @@ function main_menu_state:init()
         {text="",                                   colour={0,0,0}, target={255,255,255}, fade=1},
         {text="Zombies will kill you.",             colour={0,0,0}, target={100,255,100}, fade=2},
         {text="Sounds attracted zombies.",          colour={0,0,0}, target={100,100,255}, fade=2},
-        {text="Lava kill everything.",              colour={0,0,0}, target={255,100,100}, fade=2}
+        {text="Lava kills everything.",             colour={0,0,0}, target={255,100,100}, fade=2}
     }
     self.tut_str_index = 1
 
