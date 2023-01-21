@@ -31,13 +31,13 @@ function Level.load(filename)
 				io.write('W')
 				-- TODO: optimise walls into fewer larger objects where possible
 				Wall(x*scale, y*scale)
-			elseif r == 255 and g == 0 and b == 0 then
+			elseif r >= 1 and g == 0 and b == 0 then
 				io.write('L')
 				Lava(x*scale, y*scale)
-			elseif g == 255 and r == 0 and b == 0 then
+			elseif g >= 1 and r == 0 and b == 0 then
 				io.write('Z')
 				Zombie(x*scale, y*scale)
-			elseif r == 0 and g == 0 and b == 255 then
+			elseif r == 0 and g == 0 and b >= 1 then
 				io.write('P')
 				player:spawn(x*scale, y*scale)
 			else
