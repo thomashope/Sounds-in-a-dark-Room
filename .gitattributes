@@ -44,3 +44,4 @@ res/levels/level1.png filter=lfs diff=lfs merge=lfs -text
 res/levels/level5.png filter=lfs diff=lfs merge=lfs -text
 res/levels/level6.png filter=lfs diff=lfs merge=lfs -text
 res/levels/levelduracel.png filter=lfs diff=lfs merge=lfs -text
+screenshots/sounds.gif filter=lfs diff=lfs merge=lfs -text
