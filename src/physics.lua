@@ -19,7 +19,7 @@ function Physics.update(dt)
 end
 
 function Physics.destroy_all_with_name(name)
-	local bodies = Physics.world:getBodyList()
+	local bodies = Physics.world:getBodies()
 	for i = 1, #bodies do
 		local user_data = bodies[i]:getUserData()
 		-- Check the body has user data with the given name

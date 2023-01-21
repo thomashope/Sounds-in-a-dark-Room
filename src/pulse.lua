@@ -155,13 +155,13 @@ end
 
 function Pulse:clear_all()
 
-	local bodies = Physics.world:getBodyList()
+	local bodies = Physics.world:getBodies()
 	local fixtures = {}
 
 	-- Create a list of all fixtures
 	for i = 1, #bodies do
-		for j = 1, #bodies[i]:getFixtureList() do
-			table.insert( fixtures, bodies[i]:getFixtureList()[j] )
+		for j = 1, #bodies[i]:getFixtures() do
+			table.insert( fixtures, bodies[i]:getFixtures()[j] )
 		end
 	end
 
