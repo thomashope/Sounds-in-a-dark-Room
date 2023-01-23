@@ -103,7 +103,7 @@ function pause_menu_state:draw()
 
     	-- Grey out the reume icon if we are finished
     	if string == 'resume' and Level.finished() then
-    		love.graphics.setColor(100,100,100)
+    		love.graphics.setColor(0.5,0.5,0.5)
     	end
 
     	-- Prepend a '>' to the selected item

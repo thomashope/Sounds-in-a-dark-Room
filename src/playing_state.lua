@@ -30,7 +30,7 @@ function playing_state:enter()
 
 	-- Clear the canvas
 	love.graphics.setCanvas(self.pips)
-	love.graphics.clear(0, 0, 0, 255)
+	love.graphics.clear(0, 0, 0, 1)
 	love.graphics.setCanvas()
 end
 
@@ -67,7 +67,7 @@ function playing_state:draw()
 
 	love.graphics.setBlendMode('alpha')
 	love.graphics.setCanvas(self.pips)
-	love.graphics.setColor(0.1, 0.1, 0.1, 20)
+	love.graphics.setColor(0.1/255, 0.1/255, 0.1/255, 20/255)
 	love.graphics.rectangle('fill', 0, 0, self.pips:getWidth(), self.pips:getHeight())
 
 	camera:attach()
@@ -81,7 +81,7 @@ function playing_state:draw()
 
 	love.graphics.setCanvas()
 	love.graphics.setBlendMode('add')
-	love.graphics.setColor(255, 255, 255)
+	love.graphics.setColor(1, 1, 1)
 	love.graphics.setShader(self.blur_shader)
 	love.graphics.draw(self.pips, 0, 0)
 	love.graphics.setBlendMode('alpha')

@@ -4,15 +4,20 @@ function credits_screen_state:init()
     self.credits_string =
 [[Originally created for the GGJ2017
 
-Concept/Programming: Tom
-@HopeThomasj
+Design & Programming
 
-Audio: Chris
-linkedin.com/in/christopher-quinn-sound
+  Thomas Hope
+  @thope_xyz
+
+
+Audio
+
+  Christopher Quinn
+  linkedin.com/in/christopher-quinn-sound
 
 More levels by Bogdan, Sam A. and Sam C.
 
-And thanks to Dundee Makerspace for the awesome jam site!]]
+Thanks to Dundee Makerspace for the awesome jam site!]]
 end
 
 function credits_screen_state:update()
@@ -23,7 +28,7 @@ end
 
 function credits_screen_state:draw()
 	love.graphics.setBackgroundColor(0, 0, 0)
-	love.graphics.setColor(255,255,255)
+	love.graphics.setColor(1,1,1)
 	love.graphics.print(self.credits_string, 20, 20)
 end
 

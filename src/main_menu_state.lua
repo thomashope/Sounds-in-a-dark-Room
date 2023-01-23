@@ -14,13 +14,13 @@ function main_menu_state:init()
 
     -- Tutorial text to fade when playing is highlighted
     self.tut_str = {
-        {text="Something is moving,",               colour={0,0,0}, target={255,255,255}, fade=1.5},
-        {text="out there,",                         colour={0,0,0}, target={255,255,255}, fade=1.5},
-        {text="in the darkness...",                 colour={0,0,0}, target={255,255,255}, fade=1.5},
-        {text="",                                   colour={0,0,0}, target={255,255,255}, fade=1},
-        {text="Zombies will kill you.",             colour={0,0,0}, target={100,255,100}, fade=2},
-        {text="Sounds attracted zombies.",          colour={0,0,0}, target={100,100,255}, fade=2},
-        {text="Lava kills everything.",             colour={0,0,0}, target={255,100,100}, fade=2}
+        {text="Something is moving,",               colour={0,0,0}, target={1,1,1}, fade=1.5},
+        {text="out there,",                         colour={0,0,0}, target={1,1,1}, fade=1.5},
+        {text="in the darkness...",                 colour={0,0,0}, target={1,1,1}, fade=1.5},
+        {text="",                                   colour={0,0,0}, target={1,1,1}, fade=1},
+        {text="Zombies will kill you.",             colour={0,0,0}, target={100/255,1,100/255}, fade=2},
+        {text="Sounds attracted zombies.",          colour={0,0,0}, target={100/255,100/255,1}, fade=2},
+        {text="Lava kills everything.",             colour={0,0,0}, target={1,100/255,100/255}, fade=2}
     }
     self.tut_str_index = 1
 
@@ -28,11 +28,11 @@ function main_menu_state:init()
     -- The following is run to give us a nice intro sequence when we reach the main menu
 
     local function fade_in_title()
-        Timer.tween(3, main_menu_state.title_colour, {255,255,255}, 'in-out-quad')
+        Timer.tween(3, main_menu_state.title_colour, {1,1,1}, 'in-out-quad')
         main_menu_state.title_is_done = true
     end
     local function fade_in_menu()
-        Timer.tween(1, main_menu_state.menu_colour, {255,255,255}, 'in-out-quad')
+        Timer.tween(1, main_menu_state.menu_colour, {1,1,1}, 'in-out-quad')
         Timer.after(0.5, function() self.allow_input = true end)
     end
 

@@ -86,7 +86,7 @@ end
 
 function Lava:draw_all()
 	for i = 1, #self.all do
-		love.graphics.setColor(200 + love.math.random(20), love.math.random(40), 0)
+		love.graphics.setColor(200/255 + love.math.random(20)/255, love.math.random(40)/255, 0)
 		love.graphics.rectangle( 'fill',
 			self.all[i].x - self.all[i].size/2,	-- x pos
 			self.all[i].y - self.all[i].size/2,	-- y pos
