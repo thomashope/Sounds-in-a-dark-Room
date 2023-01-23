@@ -5,9 +5,12 @@ main_menu_state = MenuState()
 function main_menu_state:init()
 	self.items = {'play', 'options', 'credits', 'quit'}
     self.title_colour = {0,0,0}
-    self.menu_colour = {0,0,0}
-    self.title_is_done = false
-    self.allow_input = false
+
+    if not self.title_is_done then
+        self.title_is_done = false
+        self.allow_input = false
+        self.menu_colour = {0,0,0}
+    end
 
     -- Tutorial text to fade when playing is highlighted
     self.tut_str = {
@@ -88,12 +91,16 @@ function main_menu_state:draw()
     end
 end
 
+function main_menu_state:end_intro_sequence()
+    self.title_is_done = true
+    self.allow_input = true
+    self.menu_colour = {1,1,1}
+end
+
 function main_menu_state:keypressed( keycode, scancode, isrepeat )
     -- Allow escape to skip the intro sequence
     if scancode == 'escape' and not self.title_is_done then
-        self.title_is_done = true
-        self.allow_input = true
-        self.menu_colour = {255,255,255}
+        self:end_intro_sequence()
     end
     -- Since we are overriding the keypressed function we need to
     -- explicitly forward inputs

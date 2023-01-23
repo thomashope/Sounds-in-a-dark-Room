@@ -35,18 +35,6 @@ level_select_state['return'] = function( self, scancode )
 	end
 end
 
-local function GetFileNameWithoutExtension(str)
-  return str:match("(.+)%..+")
-end
-
-local function GetFileName(str)
-  return str:match("^.+/(.+)$"):match("(.+)%..+")
-end
-
-local function GetFileExtension(str)
-  return str:match("^.+(%..+)$")
-end
-
 function level_select_state:update_level_list()
 	local levels = love.filesystem.getDirectoryItems('res/levels')
 
@@ -56,7 +44,7 @@ function level_select_state:update_level_list()
 	-- only add PNGs to the level list
 	for i = 1, #levels do
 		print(i, levels[i])
-		if GetFileExtension(levels[i]) == ".png" then
+		if get_file_extension(levels[i]) == ".png" then
 			table.insert( self.items, 'level' )
 			table.insert( self.level_list, levels[i] )
 		end
@@ -85,7 +73,7 @@ function level_select_state:draw()
 		local item = self.items[i]
 
 		if item == 'level' then
-			item = GetFileNameWithoutExtension(self.level_list[i])
+			item = get_filename_without_extension(self.level_list[i])
 		end
 
 		-- Indicate where we will be returning to

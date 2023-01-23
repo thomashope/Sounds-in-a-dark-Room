@@ -28,17 +28,29 @@ require 'src.player'
 require 'src.zombie'
 require 'src.wall'
 
---[[
-- TODO: improve the Timer.tween functions...
-	When additional arguments are given they are passed as arguments
-	to the 'after' function (they are currently passed to the tweening funciton)
-	replace the tweening function string with a string or table value to pass
-	additional arguments when required 
-- TODO: scale menus for fullscreen
-- TODO: prompt user when trying to use keyboard while controller is connected
---]]
+flags = {
+	debug = false,
+	skip_intro = false,
+}
 
-function love.load()
+local initial_state = splash_screen_state
+
+function love.load(args)
+
+	for i,v in ipairs(args) do
+		if v == '--debug' then
+			io.stdout:setvbuf('no')
+			flags.debug = true
+		end
+
+		if v == '--skip-intro' then
+			initial_state = main_menu_state
+			flags.skip_intro = true
+		end
+
+		print(i,v)
+	end
+
 	-- Application setup
 	Physics:init()
 	love.mouse.setVisible(false)
@@ -56,13 +68,20 @@ function love.load()
 
 	-- Initialise the game states
 	Gamestate.registerEvents()
-	Gamestate.switch(splash_screen_state)
+	Gamestate.switch(initial_state)
+
+	if flags.skip_intro then		
+		main_menu_state:end_intro_sequence()
+	end
 end
 
 function love.update(dt)
 	Timer.update(dt)
 	controller_1:update()
-	--Lovebird.update()
+
+	if flags.debug then
+		-- Lovebird.update()
+	end
 end
 
 function love.resize(w,h)
