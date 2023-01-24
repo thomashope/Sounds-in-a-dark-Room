@@ -10,7 +10,7 @@ Watch development on the [trello board](https://trello.com/b/2j1AVdUt/sounds-in-
 
 Install love2d.
 
-Launch a debug build (logging, skips splash screen) with `make`
+`make` will launch a debug build (logging, skips splash screen).
 
 `make release` to launch the game with release configuration.
 
