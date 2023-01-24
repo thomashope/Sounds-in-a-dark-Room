@@ -1,7 +1,12 @@
 options_menu_state = MenuState()
 
+local lg = love.graphics
+
 function options_menu_state:init()
-	self.items = {'volume', 'fullscreen', 'vsync', 'back to main menu'}
+	self:add_item('Volume', 'volume')
+	self:add_item('Fullscreen', 'fullscreen')
+	self:add_item('VSync', 'vsync')
+	self:add_item('Back to Main Menu', 'return')
 	self:get_window_mode()
 	self.test_sound = love.audio.newSource('res/audio/player/sonar/Sonar_Player_01.wav', 'static')
 end
@@ -12,25 +17,31 @@ function options_menu_state:enter()
 end
 
 function options_menu_state:draw()
-    love.graphics.setBackgroundColor(self.bg)
-    love.graphics.print("Options", Fonts.title, 20, 20)
+    lg.setBackgroundColor(self.bg)
+    lg.print("Options", Fonts.title, 20, 20)
 
-    love.graphics.setColor(255,255,255)
+    lg.setColor(1,1,1)
     for i = 1, #self.items do
-    	local string = self.items[i]
+    	local item_action = self.items[i].action
+    	local item_name = self.items[i].name
 
-    	if string == 'volume' then
-    		string = string..': '..string.format('%d%%', love.audio.getVolume()*100)
-    	elseif string == 'fullscreen' then
-    		if self.window_mode.fullscreen then string = string..': [ON] off' else string = string..': on [OFF]' end
-		elseif string == 'vsync' then
-    		if self.window_mode.vsync then string = string..': [ON] off' else string = string..': on [OFF]' end
+    	if item_action == 'volume' then
+    		item_name = item_name..': '..string.format('%d%%', love.audio.getVolume()*100)
+    	elseif item_action == 'fullscreen' then
+    		if self.window_mode.fullscreen then
+    			item_name = item_name..': [ON] off'
+			else
+				item_name = item_name..': on [OFF]'
+			end
+		elseif item_action == 'vsync' then
+    		if self.window_mode.vsync then
+    			item_name = item_name..': [ON] off'
+			else
+				item_name = item_name..': on [OFF]'
+			end
 		end
 
-		-- prepend a '>' to the selected item
-    	if i == self.index then string = "> "..string end
-
-    	love.graphics.print(string, 20, 80 + 30 * i)
+		self:print_menu_item(item_name, i)
     end
 end
 
@@ -47,7 +58,7 @@ end
 options_menu_state['fullscreen'] = function( self, scancode )
 	if scancode == 'space' or controller_1:button_pressed_a() then
 		if not self.window_mode.fullscreen then
-			love.window.setMode( love.graphics.getWidth(), love.graphics.getHeight(), {fullscreen=true} )
+			love.window.setMode( lg.getWidth(), lg.getHeight(), {fullscreen=true} )
 		else
 			love.window.setMode( 800, 600, {fullscreen=false} )
 		end
@@ -58,15 +69,15 @@ end
 options_menu_state['vsync'] = function( self, scancode )
 	if scancode == 'space' or controller_1:button_pressed_a() then
 		if not self.window_mode.vsync then
-			love.window.setMode( love.graphics.getWidth(), love.graphics.getHeight(), {vsync=true, fullscreen=self.window_mode.fullscreen} )
+			love.window.setMode( lg.getWidth(), lg.getHeight(), {vsync=true, fullscreen=self.window_mode.fullscreen} )
 		else
-			love.window.setMode( love.graphics.getWidth(), love.graphics.getHeight(), {vsync=false, fullscreen=self.window_mode.fullscreen} )
+			love.window.setMode( lg.getWidth(), lg.getHeight(), {vsync=false, fullscreen=self.window_mode.fullscreen} )
 		end
 		self:get_window_mode()
 	end
 end
 
-options_menu_state['back to main menu'] = function( self, scancode )
+options_menu_state['return'] = function( self, scancode )
 	if scancode == 'space' or controller_1:button_pressed_a() then
 		Gamestate.switch(main_menu_state)
 	end

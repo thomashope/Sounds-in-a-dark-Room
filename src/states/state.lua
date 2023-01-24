@@ -1,19 +1,38 @@
+local lg = love.graphics
+
 State = Class{
 	bg = {0, 0, 0}
 }
 
 MenuState = Class{
 	__includes = State,
-	index = 1,
-	items = {}
+	init = function(self)
+		self.index = 1
+		self.items = {}
+	end
 }
 
 function MenuState:enter()
 	self.index = 1
 end
 
+function MenuState:add_item(name_, action_)
+	table.insert(self.items, {
+		name = name_,
+		action = action_,
+	})
+end
+
+function MenuState:print_menu_item(name, index)
+	if index == self.index then
+		-- item is selected
+		name = '> ' .. name
+	end
+	lg.print(name, 20, 80 + 30 * index)
+end
+
 function MenuState:call_selected_item( scancode )
-	self[self.items[self.index]]( self, scancode )
+	self[self.items[self.index].action]( self, scancode )
 end
 
 function MenuState:update()

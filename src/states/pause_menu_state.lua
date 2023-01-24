@@ -3,7 +3,10 @@ pause_menu_state = MenuState()
 function pause_menu_state:init()
 	self.bg = {0, 0, 0, 100}
 	self.title = ''
-	self.items = {'resume', 'restart', 'switch level', 'quit to main menu'}
+	self:add_item('Resume', 'resume')
+	self:add_item('Restart', 'restart')
+	self:add_item('Switch Level', 'switch level')
+	self:add_item('Quit to Main Menu', 'return')
 	self.lava_death_messages = {}
 	self.zombie_death_messages = {}
 	self.entry_condition = ''
@@ -69,7 +72,7 @@ pause_menu_state['switch level'] = function( self, scancode )
 end
 
 -- triggered when quit to main menu is highlighted
-pause_menu_state['quit to main menu'] = function( self, scancode )
+pause_menu_state['return'] = function( self, scancode )
 	if scancode == 'space' or controller_1:button_pressed_a() then
 		Gamestate.switch(main_menu_state)
 	end
@@ -98,19 +101,15 @@ function pause_menu_state:draw()
     for i = 1, #self.items do
     	love.graphics.setColor(1,1,1)
     	
-    	local menu_item = self.items[i]
+    	local item_name = self.items[i].name
+    	local item_action = self.items[i].action
 
     	-- Grey out the reume icon if we are finished
-    	if menu_item == 'resume' and Level.finished() then
+    	if item_action == 'resume' and Level.finished() then
     		love.graphics.setColor(0.5,0.5,0.5)
     	end
 
-    	-- Prepend a '>' to the selected item
-    	if i == self.index then
-    		menu_item = "> " .. menu_item
-    	end
-    	
-    	love.graphics.print(menu_item, 20, 80 + 30 * i)
+    	self:print_menu_item(item_name, i)
     end
 
     -- Display time taken

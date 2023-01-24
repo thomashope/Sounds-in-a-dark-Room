@@ -1,9 +1,10 @@
 main_menu_state = MenuState()
 
--- TODO: allow the intro to be skipped by pressing start on the controller
-
 function main_menu_state:init()
-	self.items = {'play', 'options', 'credits', 'quit'}
+    self:add_item('Play', 'play')
+    self:add_item('Options', 'options')
+    self:add_item('Credits', 'credits')
+    self:add_item('Quit', 'quit')
     self.title_colour = {0,0,0}
 
     if not self.title_is_done then
@@ -78,9 +79,7 @@ function main_menu_state:draw()
     if self.title_is_done then
         love.graphics.setColor(self.menu_colour)
         for i = 1, #self.items do
-        	local string = self.items[i]
-        	if i == self.index then string = "> "..string end
-        	love.graphics.print(string, 20, 80 + 30 * i)
+            self:print_menu_item(self.items[i].name, i)
         end
     end
 

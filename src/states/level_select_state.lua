@@ -10,9 +10,6 @@ level_select_state = MenuState()
 function level_select_state:init()
 	self.level_list = {}
 	self.level_index = 1
-	self.items = {'level', 'return'}
-
-	self:update_level_list()
 end
 
 function level_select_state:enter(previous)
@@ -43,23 +40,23 @@ function level_select_state:update_level_list()
 
 	-- only add PNGs to the level list
 	for i = 1, #levels do
-		print(i, levels[i])
 		if get_file_extension(levels[i]) == ".png" then
-			table.insert( self.items, 'level' )
+			local name_no_ext = get_filename_without_extension(levels[i])
+			self:add_item(name_no_ext, 'level')
 			table.insert( self.level_list, levels[i] )
 		end
 	end
 
-	table.insert( self.items, 'return' )
+	self:add_item('Return to...', 'return')
 end
 
 function level_select_state:get_return_menu_item_string()
 	if self.previous == main_menu_state then
-		return 'return to main menu'
+		return 'Return to Main Menu'
 	elseif self.previous == playing_state then
-		return 'return to game'
+		return 'Return to Game'
 	elseif self.previous == pause_menu_state then
-		return 'return to pause menu'
+		return 'Return to Pause Menu'
 	end
 end
 
@@ -70,22 +67,14 @@ function level_select_state:draw()
 
 	-- Iterate over the list of menu items
 	for i = 1, #self.items do
-		local item = self.items[i]
-
-		if item == 'level' then
-			item = get_filename_without_extension(self.level_list[i])
-		end
+		local item_action = self.items[i].action
+		local item_name = self.items[i].name
 
 		-- Indicate where we will be returning to
-		if item == 'return' then
-			item = self:get_return_menu_item_string()
+		if item_action == 'return' then
+			item_name = self:get_return_menu_item_string()
 		end
 
-		-- prepend > to indicate the selected item
-		if i == self.index then
-			item = '> '..item
-		end
-
-		love.graphics.print(item, 20, 80 + 30 * i)
+		self:print_menu_item(item_name, i)
 	end
 end
