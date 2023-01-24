@@ -4,7 +4,7 @@
 Pulse = Class{
 	__includes = Entity,
 	lifetime = 1,
-	color = {255,255,255},
+	color = {1,1,1},
 	name = 'pulse',
 	age = 0,
 	pips = {},
@@ -13,6 +13,8 @@ Pulse = Class{
 	immidiate_instances = {}, -- Contains all instances of Pulse, Each subclass uses it's own table
 	preallocated_instances = {}
 }
+
+local lg = love.graphics
 
 -- A pulse has a location, around which it fires a bunch of particles 'pips'
 -- The pulse can either be immidiate or preallocated
@@ -102,10 +104,21 @@ function Pulse:update(dt)
 end
 
 function Pulse:draw()
-	love.graphics.setColor(self.color[1], self.color[2], self.color[3], 300*(1-(self.age / self.lifetime)) )
+	
+	-- build list of pip positions
+	local positions = {}
 	for i = 1, #self.pips do
-		love.graphics.points(self.pips[i]:getBody():getPosition())
+		local x, y = self.pips[i]:getBody():getPosition()
+		table.insert(positions, x)
+		table.insert(positions, y)
 	end
+
+	-- duplicate the initial points so our line joins back on the start
+	table.insert(positions, positions[1])
+	table.insert(positions, positions[2])
+
+	lg.setColor(self.color[1], self.color[2], self.color[3], 1.2*(1-(self.age / self.lifetime)) )
+	lg.line(positions)
 end
 
 -- Update all pulses, remove the ones that are dead

@@ -38,7 +38,7 @@ function Player:init(x, y)
 	-- Preallocate all the sonar objects
 	for i = 1, self.sonar_list_max do
 		table.insert( self.sonar_list, Pulse(self.x, self.y, self.sonar_speed, 200, self.sonar_lifetime, 1, true) )
-		self.sonar_list[i].color = {80,60,255}
+		self.sonar_list[i].color = {0.6,0.5,1}
 		self.sonar_list[i]:destroy()
 	end
 
