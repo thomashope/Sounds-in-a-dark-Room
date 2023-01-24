@@ -72,7 +72,7 @@ end
 function main_menu_state:draw()
     love.graphics.setBackgroundColor(self.bg)
     love.graphics.setColor(self.title_colour)
-    love.graphics.print("Sounds in a Dark Room", 20, 20, 0, 3, 3)
+    love.graphics.print("Sounds in a Dark Room", Fonts.title, 20, 20)
 
     -- Only draw the menu when the intro is done
     if self.title_is_done then

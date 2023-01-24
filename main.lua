@@ -27,6 +27,7 @@ require 'src.pulse'
 require 'src.player'
 require 'src.zombie'
 require 'src.wall'
+require 'src.fonts'
 
 flags = {
 	debug = false,
@@ -53,6 +54,7 @@ function love.load(args)
 
 	-- Application setup
 	Physics:init()
+	Fonts:init()
 	love.mouse.setVisible(false)
 	love.graphics.setNewFont(18)
 	love.audio.setVolume(0.5)

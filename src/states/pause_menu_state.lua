@@ -31,7 +31,6 @@ function pause_menu_state:enter(previous, condition)
 		self.index = 2
 	end
 
-
 	if Level.won then
 		self.title = 'YOU KILLED EVERYTHING\n'
 	elseif Level.killed_by == 'lava' then
@@ -91,24 +90,27 @@ function pause_menu_state:draw()
 	love.graphics.setColor(self.bg)
 	love.graphics.rectangle('fill', 0, 0, window_width, window_height)
 
-    love.graphics.setColor(255,255,255)
+    love.graphics.setColor(1,1,1)
     -- Title at the top of the screen
-    love.graphics.print(self.title, 20, 20, 0, 3, 3)
+    love.graphics.print(self.title, Fonts.title, 20, 20)
 
     -- display menu items
     for i = 1, #self.items do
-    	love.graphics.setColor(255,255,255)
+    	love.graphics.setColor(1,1,1)
     	
-    	local string = self.items[i]
+    	local menu_item = self.items[i]
 
     	-- Grey out the reume icon if we are finished
-    	if string == 'resume' and Level.finished() then
+    	if menu_item == 'resume' and Level.finished() then
     		love.graphics.setColor(0.5,0.5,0.5)
     	end
 
     	-- Prepend a '>' to the selected item
-    	if i == self.index then string = "> "..string end
-    	love.graphics.print(string, 20, 80 + 30 * i)
+    	if i == self.index then
+    		menu_item = "> " .. menu_item
+    	end
+    	
+    	love.graphics.print(menu_item, 20, 80 + 30 * i)
     end
 
     -- Display time taken

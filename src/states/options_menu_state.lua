@@ -13,7 +13,7 @@ end
 
 function options_menu_state:draw()
     love.graphics.setBackgroundColor(self.bg)
-    love.graphics.print("Options...", 20, 20)
+    love.graphics.print("Options", Fonts.title, 20, 20)
 
     love.graphics.setColor(255,255,255)
     for i = 1, #self.items do
