@@ -41,9 +41,11 @@ end
 
 function MenuState:navigate_menu()
 	if controller_1:button_pressed_up() then
+		Audio.play_random(player.l_foot_sounds)
 		self.index = self.index - 1
 		self.index = math.wrap( self.index, 1, #self.items )
 	elseif controller_1:button_pressed_down() then
+		Audio.play_random(player.l_foot_sounds)
 		self.index = self.index + 1
 		self.index = math.wrap( self.index, 1, #self.items )
 	elseif controller_1:button_pressed_any() then
