@@ -34,7 +34,7 @@ function options_menu_state:draw()
 				item_name = item_name..': on [OFF]'
 			end
 		elseif item_action == 'vsync' then
-    		if self.window_mode.vsync then
+    		if self.window_mode.vsync ~= 0 then
     			item_name = item_name..': [ON] off'
 			else
 				item_name = item_name..': on [OFF]'
@@ -68,10 +68,10 @@ end
 
 options_menu_state['vsync'] = function( self, scancode )
 	if scancode == 'space' or controller_1:button_pressed_a() then
-		if not self.window_mode.vsync then
-			love.window.setMode( lg.getWidth(), lg.getHeight(), {vsync=true, fullscreen=self.window_mode.fullscreen} )
+		if self.window_mode.vsync == 0 then
+			love.window.setMode( lg.getWidth(), lg.getHeight(), {vsync=1, fullscreen=self.window_mode.fullscreen} )
 		else
-			love.window.setMode( lg.getWidth(), lg.getHeight(), {vsync=false, fullscreen=self.window_mode.fullscreen} )
+			love.window.setMode( lg.getWidth(), lg.getHeight(), {vsync=0, fullscreen=self.window_mode.fullscreen} )
 		end
 		self:get_window_mode()
 	end
