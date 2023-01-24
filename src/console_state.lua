@@ -9,9 +9,7 @@ function console_state:init()
 
 	self.input = ''
 
-	table.insert( self.history, {text="Welcome to THE CONSOLE!", colour={100,100,100}})
-	table.insert( self.history, {text="May I say, you look lovely today", colour={100,100,100}} )
-	table.insert( self.history, {text="Very intelligent also", colour={100,100,100}} )
+	table.insert( self.history, {text="Welcome to THE CONSOLE!", colour={1,1,1}})
 end
 
 function console_state:enter(previous)
@@ -33,7 +31,7 @@ function console_state:evaluate( text )
 	-- TODO: use regex to extract text before and aftere points
 	-- so input 'Player.speed' is evaluated as _G[Player].speed
 	-- Allow the evaluation or arbitrary lua code??????????????
-	table.insert( self.history, {text=tostring(_G[text]), colour={100,100,100}})
+	table.insert( self.history, {text=tostring(_G[text]), colour={0.6,0.6,0.6}})
 end
 
 function console_state:selected_text()
@@ -48,7 +46,7 @@ function console_state:keypressed( keycode, scancode, isrepeat )
 	if scancode == 'return' and self:selected_text() ~= '' then
 
 		-- run the input and add it to the hisotry
-		table.insert( self.history, {text=self:selected_text(), colour={255,255,255}} )
+		table.insert( self.history, {text=self:selected_text(), colour={1,1,1}} )
 		self:evaluate( self:selected_text() )
 
 		-- clear the input field
@@ -83,7 +81,7 @@ function console_state:draw()
 	for i = #self.history, 1, -1 do
 		-- colorize the selected history text if any
 		if i == #self.history - self.history_index + 1 then
-			love.graphics.setColor( 255, 200, 100 )
+			love.graphics.setColor( 1, 200/255, 100/255 )
 		else
 			love.graphics.setColor( self.history[i].colour )
 		end
@@ -94,19 +92,19 @@ function console_state:draw()
 	end
 	
 	-- draw input box
-	love.graphics.setColor( 0, 100, 100, 100 )
+	love.graphics.setColor( 0.4, 0.4, 0.4, 0.4 )
 	love.graphics.rectangle( 'fill', 0, window_height - 35, window_width, window_height - 5)
 
 	-- Draw the input line
-	love.graphics.setColor(255,255,255)
-	local input = love.graphics.newText( love.graphics.getFont(), ':> '..self:selected_text() )
+	love.graphics.setColor(1,1,1)
+	local input = love.graphics.newText( love.graphics.getFont(), '$ '..self:selected_text() )
 	love.graphics.draw(input, 20, window_height - 30)
 	
-	love.graphics.setColor(255,255,255,100)
+	love.graphics.setColor(1,1,1,0.4)
 	love.graphics.line(20 + input:getWidth(), window_height - 30, 20 + input:getWidth(), window_height - 5)
 
 	-- Draw pointless title
-	love.graphics.setColor(0,0,0, 100)
+	love.graphics.setColor(0,0,0, 0.4)
 	love.graphics.rectangle( 'fill', 10, 10, 260, 40 )
 	love.graphics.setColor( 255,255,255,255 )
 	love.graphics.print( "SECRET DEBUG CONSOLE", 20, 20 )
