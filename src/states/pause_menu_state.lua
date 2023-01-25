@@ -116,7 +116,7 @@ function pause_menu_state:draw()
     	local time = string.format('Time: %.2fs', Level.finish_time - Level.start_time)
 
     	love.graphics.setColor(self.time_colour)
-    	love.graphics.print(time, 20, 100 + 30 * (#self.items + 1))
+    	self:draw_menu_item(time, #self.items + 2)
     end
 end
 

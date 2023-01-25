@@ -6,45 +6,50 @@ Level = {
 	killed_by = ''
 }
 
+local function debug_write(...)
+	if flags.debug then io.write(...) end
+end
+
 function Level.load(filename)
 	Level.clear()
 
 	Physics.destroy_all_with_name('pulse')
 
 	-- Print a bunch of debug stuff to try to find the memory leak
-	print('--- restarted level ---')
-	print("Player pulse caches: "..#Player.sonar_list)
-	print("Player pulse cache size: "..#Player.sonar_list[1])
-	print("Immidiate pulses: "..#Pulse.immidiate_instances)
-	print("Preallocated pulses: "..#Pulse.preallocated_instances)
-	print("Box2d: "..Physics.world:getBodyCount())
+	debug_print('--- restarted level ---')
+	debug_print("Player pulse caches: "..#Player.sonar_list)
+	debug_print("Player pulse cache size: "..#Player.sonar_list[1])
+	debug_print("Immidiate pulses: "..#Pulse.immidiate_instances)
+	debug_print("Preallocated pulses: "..#Pulse.preallocated_instances)
+	debug_print("Box2d: "..Physics.world:getBodyCount())
 
 	local scale = Wall.size
 	local image = love.image.newImageData("res/levels/"..filename)
 
-	print('Loading ', filename)
+	debug_print('Loading ', filename)
 	for y = 0, image:getHeight()-1 do
 		for x = 0, image:getWidth()-1 do
 			local r, g, b, a = image:getPixel(x, y)
 
 			if r == 0 and g == 0 and b == 0 then
-				io.write('W')
+				debug_write('W')
 				-- TODO: optimise walls into fewer larger objects where possible
 				Wall(x*scale, y*scale)
 			elseif r >= 1 and g == 0 and b == 0 then
-				io.write('L')
+				-- TODO: optimise lava into fewer larger objects where possible
+				debug_write('L')
 				Lava(x*scale, y*scale)
 			elseif g >= 1 and r == 0 and b == 0 then
-				io.write('Z')
+				debug_write('Z')
 				Zombie(x*scale, y*scale)
 			elseif r == 0 and g == 0 and b >= 1 then
-				io.write('P')
+				debug_write('P')
 				player:spawn(x*scale, y*scale)
 			else
-				io.write(' ')
+				debug_write(' ')
 			end
 		end
-		io.write('\n')
+		debug_write('\n')
 	end
 
 	Level.loaded = filename
