@@ -129,7 +129,7 @@ function Zombie:update(dt)
 		end
 
 		-- Create footstep pulse
-		local p = Pulse(self.x, self.y, 100, 16, 0.2, {1,2})
+		local p = Pulse(self.x, self.y, 150, 25, 0.2, {1,2})
 		p.color = {0.4,1,0.4}
 		p.name = 'zombie step'
 
