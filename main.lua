@@ -56,7 +56,6 @@ function love.load(args)
 	Physics:init()
 	Fonts:init()
 	love.mouse.setVisible(false)
-	love.graphics.setNewFont(18)
 	love.audio.setVolume(0.5)
 	love.math.setRandomSeed(love.timer.getTime())
 
