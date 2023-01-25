@@ -162,7 +162,7 @@ function Player:update_movement(dt)
 end
 
 function Player:use_sonar()
-	print("Box2d: "..Physics.world:getBodyCount())
+	debug_print("Box2d: "..Physics.world:getBodyCount())
 	
 	if self.sonar_timer > self.sonar_rate and self.alive then
 		self.sonar_timer = 0

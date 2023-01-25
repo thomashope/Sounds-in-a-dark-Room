@@ -3,11 +3,22 @@ credits_screen_state = State()
 local lg = love.graphics
 
 function credits_screen_state:init()
+	self.exit_credits = false
 end
 
 function credits_screen_state:update()
-	if controller_1:button_pressed_any() then
+	if self.exit_credits then
 		Gamestate.switch(main_menu_state)
+	end
+
+	if controller_1:button_pressed_any() then
+		self.exit_credits = true
+	end
+end
+
+function credits_screen_state:keypressed( keycode, scancode, isrepeat )
+	if scancode == 'space' then
+		self.exit_credits = true
 	end
 end
 
@@ -41,10 +52,4 @@ function credits_screen_state:draw()
 	lg.printf("Sam A.", name_font, 0, y, window_width, "center")
 	y = y + name_font_size + space
 	lg.printf("Sam C.", name_font, 0, y, window_width, "center")
-end
-
-function credits_screen_state:keypressed( keycode, scancode, isrepeat )
-	if scancode == 'space' then
-		Gamestate.switch(main_menu_state)
-	end
 end
