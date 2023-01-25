@@ -58,9 +58,9 @@ end
 options_menu_state['fullscreen'] = function( self, scancode )
 	if scancode == 'space' or controller_1:button_pressed_a() then
 		if not self.window_mode.fullscreen then
-			love.window.setMode( lg.getWidth(), lg.getHeight(), {fullscreen=true} )
+			love.window.setMode( lg.getWidth(), lg.getHeight(), {fullscreen=true, resizable=true} )
 		else
-			love.window.setMode( 800, 600, {fullscreen=false} )
+			love.window.setMode( 800, 600, {fullscreen=false, resizable=true} )
 		end
 		self:get_window_mode()
 	end
