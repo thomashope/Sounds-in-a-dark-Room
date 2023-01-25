@@ -23,12 +23,30 @@ function MenuState:add_item(name_, action_)
 	})
 end
 
-function MenuState:print_menu_item(name, index)
+function MenuState:get_menu_left_pad()
+	return math.clamp(window_width * 0.05, 20, 100)
+end
+
+function MenuState:get_title_top_pad()
+	return math.clamp(window_height * 0.05, 20, 100)
+end
+
+function MenuState:get_menu_top_pad()
+	return self:get_title_top_pad() + 60
+end
+
+function MenuState:draw_menu_title(title)
+    lg.print(title, Fonts.title, self:get_menu_left_pad(), self:get_title_top_pad())
+end
+
+function MenuState:draw_menu_item(name, index)
 	if index == self.index then
 		-- item is selected
 		name = '> ' .. name
 	end
-	lg.print(name, 20, 80 + 30 * index)
+	lg.print(name,
+		self:get_menu_left_pad(),
+		self:get_menu_top_pad() + 30 * index)
 end
 
 function MenuState:call_selected_item( scancode )

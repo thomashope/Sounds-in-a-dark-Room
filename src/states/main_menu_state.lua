@@ -73,20 +73,22 @@ end
 function main_menu_state:draw()
     love.graphics.setBackgroundColor(self.bg)
     love.graphics.setColor(self.title_colour)
-    love.graphics.print("Sounds in a Dark Room", Fonts.title, 20, 20)
+    self:draw_menu_title("Sounds In A Dark Room")
 
     -- Only draw the menu when the intro is done
     if self.title_is_done then
         love.graphics.setColor(self.menu_colour)
         for i = 1, #self.items do
-            self:print_menu_item(self.items[i].name, i)
+            self:draw_menu_item(self.items[i].name, i)
         end
     end
 
     -- Draw the tutorial stings
     for i = 1, #self.tut_str do
         love.graphics.setColor(self.tut_str[i].colour)
-        love.graphics.print(self.tut_str[i].text, 220, 80 + 30 * i)
+        love.graphics.print(self.tut_str[i].text,
+            self:get_menu_left_pad() + 150,
+            self:get_menu_top_pad() + 30 * i)
     end
 end
 

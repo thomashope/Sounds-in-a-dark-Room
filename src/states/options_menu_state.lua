@@ -18,7 +18,7 @@ end
 
 function options_menu_state:draw()
     lg.setBackgroundColor(self.bg)
-    lg.print("Options", Fonts.title, 20, 20)
+    self:draw_menu_title("Options")
 
     lg.setColor(1,1,1)
     for i = 1, #self.items do
@@ -41,7 +41,7 @@ function options_menu_state:draw()
 			end
 		end
 
-		self:print_menu_item(item_name, i)
+		self:draw_menu_item(item_name, i)
     end
 end
 

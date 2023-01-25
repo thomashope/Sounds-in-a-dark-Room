@@ -7,6 +7,8 @@ level_select_state = MenuState()
 --	* zombie sonar visibility (toggle)
 --	* lava visibility (toggle)
 
+local lg = love.graphics
+
 function level_select_state:init()
 	self.level_list = {}
 	self.level_index = 1
@@ -61,9 +63,9 @@ function level_select_state:get_return_menu_item_string()
 end
 
 function level_select_state:draw()
-	love.graphics.setBackgroundColor(self.bg)
-	love.graphics.setColor(1,1,1)
-	love.graphics.print('Level Select', Fonts.title, 20, 20)
+	lg.setBackgroundColor(self.bg)
+	lg.setColor(1,1,1)
+	self:draw_menu_title('Level Select')
 
 	-- Iterate over the list of menu items
 	for i = 1, #self.items do
@@ -75,6 +77,6 @@ function level_select_state:draw()
 			item_name = self:get_return_menu_item_string()
 		end
 
-		self:print_menu_item(item_name, i)
+		self:draw_menu_item(item_name, i)
 	end
 end

@@ -12,8 +12,8 @@ function credits_screen_state:update()
 end
 
 function credits_screen_state:draw()
-	love.graphics.setBackgroundColor(0, 0, 0)
-	love.graphics.setColor(1,1,1)
+	lg.setBackgroundColor(0, 0, 0)
+	lg.setColor(1,1,1)
 
 	local x = window_width * 0.5
 	local y = 70

@@ -94,8 +94,7 @@ function pause_menu_state:draw()
 	love.graphics.rectangle('fill', 0, 0, window_width, window_height)
 
     love.graphics.setColor(1,1,1)
-    -- Title at the top of the screen
-    love.graphics.print(self.title, Fonts.title, 20, 20)
+    self:draw_menu_title(self.title)
 
     -- display menu items
     for i = 1, #self.items do
@@ -109,7 +108,7 @@ function pause_menu_state:draw()
     		love.graphics.setColor(0.5,0.5,0.5)
     	end
 
-    	self:print_menu_item(item_name, i)
+    	self:draw_menu_item(item_name, i)
     end
 
     -- Display time taken
